@@ -8,24 +8,22 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f5f5f5; color: #111; min-height: 100vh; }
   .nav { display: flex; background: #fff; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
-  .nav-btn { flex: 1; padding: 14px 0; font-size: 14px; border: none; background: transparent; color: #888; cursor: pointer; transition: color 0.15s; border-bottom: 2px solid transparent; }
+  .nav-btn { flex: 1; padding: 14px 0; font-size: 14px; border: none; background: transparent; color: #888; cursor: pointer; border-bottom: 2px solid transparent; font-family: inherit; }
   .nav-btn.active { color: #111; border-bottom: 2px solid #111; font-weight: 500; }
   .screen { display: none; padding: 20px 16px; max-width: 480px; margin: 0 auto; }
   .screen.active { display: block; }
   .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
   .section-label { font-size: 12px; color: #888; font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-  input[type=text], input[type=password], input[type=datetime-local] { width: 100%; padding: 13px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit; background: #fff; color: #111; }
+  input[type=text], input[type=password] { width: 100%; padding: 13px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; transition: border-color 0.15s; font-family: inherit; background: #fff; color: #111; margin-bottom: 0; }
   input:focus { border-color: #111; }
-  .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; font-family: inherit; }
+  .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
   .btn-black { background: #111; color: #fff; }
   .btn-black:hover { opacity: 0.85; }
   .btn-outline { background: #fff; color: #111; border: 1px solid #ddd; }
   .btn-outline:hover { background: #f5f5f5; }
-  .btn-sm { width: auto; padding: 8px 16px; font-size: 13px; }
-  .btn-danger { background: #fff; color: #e03; border: 1px solid #fcc; }
-  .btn-danger:hover { background: #fff5f5; }
   .btn-red { background: #e03; color: #fff; }
   .btn-red:hover { opacity: 0.85; }
+  .btn-sm { width: auto; padding: 8px 16px; font-size: 13px; }
   .vote-option { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid #e5e5e5; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; user-select: none; }
   .vote-option:hover { border-color: #bbb; background: #fafafa; }
   .vote-option.selected { border-color: #111; background: #f8f8f8; }
@@ -37,7 +35,6 @@
   .msg-success { background: #f0fdf4; color: #166534; }
   .msg-error { background: #fef2f2; color: #991b1b; }
   .msg-info { background: #eff6ff; color: #1e40af; }
-  .msg-warning { background: #fffbeb; color: #92400e; }
   .result-item { margin-bottom: 14px; }
   .result-meta { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 5px; }
   .result-name { font-weight: 500; color: #111; }
@@ -60,24 +57,20 @@
   .status-badge { display: inline-block; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; margin-bottom: 12px; }
   .status-open { background: #f0fdf4; color: #166534; }
   .status-closed { background: #fef2f2; color: #991b1b; }
-  .status-pending { background: #fffbeb; color: #92400e; }
-
-  /* 투표 완료 모달 */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.show { opacity: 1; pointer-events: all; }
   .modal-box { background: #fff; border-radius: 20px; padding: 36px 28px; max-width: 320px; width: 90%; text-align: center; transform: scale(0.92); transition: transform 0.2s; }
   .modal-overlay.show .modal-box { transform: scale(1); }
   .modal-icon { font-size: 56px; margin-bottom: 16px; }
   .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-  .modal-sub { font-size: 14px; color: #888; margin-bottom: 24px; line-height: 1.6; }
-  .modal-seat { font-size: 16px; font-weight: 600; color: #111; background: #f5f5f5; border-radius: 8px; padding: 8px 16px; display: inline-block; margin-bottom: 6px; }
+  .modal-seat { font-size: 16px; font-weight: 600; background: #f5f5f5; border-radius: 8px; padding: 8px 16px; display: inline-block; margin-bottom: 6px; }
   .modal-team { font-size: 13px; color: #888; margin-bottom: 20px; }
-
-  /* 투표 불가 화면 */
+  .modal-sub { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 24px; }
   .vote-closed { text-align: center; padding: 48px 20px; }
   .vote-closed-icon { font-size: 48px; margin-bottom: 16px; }
   .vote-closed-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
   .vote-closed-sub { font-size: 14px; color: #888; line-height: 1.6; }
+  .section-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -106,16 +99,13 @@
 
 <!-- 투표 화면 -->
 <div class="screen active" id="screen-vote">
-  <!-- 투표 불가 상태 -->
   <div id="vote-closed-view" style="display:none;">
     <div class="vote-closed">
-      <div class="vote-closed-icon" id="closed-icon">⏳</div>
-      <div class="vote-closed-title" id="closed-title">투표 준비 중</div>
-      <div class="vote-closed-sub" id="closed-sub">잠시 후 투표가 시작됩니다.</div>
+      <div class="vote-closed-icon">🔒</div>
+      <div class="vote-closed-title">투표가 마감되었습니다</div>
+      <div class="vote-closed-sub">투표가 종료되었습니다.<br>결과는 시상식에서 발표됩니다.</div>
     </div>
   </div>
-
-  <!-- 투표 폼 -->
   <div id="vote-form-view">
     <div class="card">
       <div class="section-label">내 좌석 번호</div>
@@ -143,52 +133,52 @@
 
   <div id="admin-panel" style="display:none;">
 
-    <!-- 투표 열기/닫기 -->
+    <!-- 관객투표 상태 -->
     <div class="card">
-      <div class="section-label">투표 상태</div>
-      <div id="vote-status-badge" style="margin-bottom:12px;"></div>
-      <button class="btn btn-sm" id="toggle-vote-btn" onclick="toggleVote()" style="width:100%;padding:13px;">-</button>
+      <div class="section-label">관객 투표 상태</div>
+      <div id="vote-status-badge" class="status-badge status-open">🟢 관객 투표 진행 중</div><br>
+      <button class="btn btn-sm" id="toggle-vote-btn" onclick="toggleVote()" style="width:100%;padding:13px;margin-top:4px;">투표 마감</button>
       <div class="msg" id="time-msg"></div>
+    </div>
+
+    <!-- 강사투표 상태 -->
+    <div class="card">
+      <div class="section-label">강사 투표 상태</div>
+      <div id="judge-status-badge" class="status-badge status-open">🟢 강사 투표 진행 중</div><br>
+      <button class="btn btn-sm" id="toggle-judge-btn" onclick="toggleJudgeVote()" style="width:100%;padding:13px;margin-top:4px;">강사 투표 마감</button>
+      <div class="msg" id="judge-time-msg"></div>
     </div>
 
     <!-- 현장 좌석 추가 -->
     <div class="card">
       <div class="section-label">현장 결제 / 초대권 좌석 추가</div>
-      <p style="font-size:13px;color:#888;margin-bottom:10px;">예매 외 좌석을 추가하면 투표가 허용돼요</p>
+      <p style="font-size:13px;color:#888;margin-bottom:10px;">예: 나-55 또는 라25-27,34-37</p>
       <div style="display:flex;gap:8px;">
-        <input type="text" id="extra-input" placeholder="예: 라25-27,34-37 또는 나-55" style="margin:0;flex:1;" onkeydown="if(event.key==='Enter')addExtraSeat()" />
+        <input type="text" id="extra-input" placeholder="라25-27,34-37 또는 나-55" style="flex:1;" />
         <button class="btn btn-black btn-sm" onclick="addExtraSeat()">추가</button>
       </div>
       <div id="extra-tags" style="margin-top:10px;"></div>
-      <div class="msg" id="extra-msg"></div>
       <button class="btn btn-black" onclick="saveExtraSeats()" style="margin-top:12px;">저장</button>
+      <div class="msg" id="extra-msg"></div>
     </div>
 
-    <div style="display:flex;gap:10px;margin-bottom:14px;">
-      <button class="btn btn-danger btn-sm" onclick="resetVotes()" style="flex:1;">투표 초기화</button>
+    <div style="margin-bottom:14px;">
+      <button class="btn btn-outline" onclick="resetVotes()" style="color:#e03;border-color:#fcc;">투표 초기화</button>
     </div>
     <div class="msg" id="admin-msg"></div>
 
     <div class="divider"></div>
 
     <!-- 관객투표 집계 -->
-    <div style="font-size:15px;font-weight:500;margin-bottom:12px;">🗳️ 관객 투표 집계</div>
+    <div class="section-title">🗳️ 관객 투표 집계</div>
     <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-num" id="total-votes">-</div>
-        <div class="stat-label">총 투표 수</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" id="remain-votes">-</div>
-        <div class="stat-label">미투표 좌석</div>
-      </div>
+      <div class="stat-box"><div class="stat-num" id="total-votes">-</div><div class="stat-label">총 투표 수</div></div>
+      <div class="stat-box"><div class="stat-num" id="remain-votes">-</div><div class="stat-label">미투표 좌석</div></div>
     </div>
-
     <div class="card">
       <div class="section-label" style="margin-bottom:14px;">실시간 득표 현황</div>
       <div id="result-list"><div class="loading">불러오는 중...</div></div>
     </div>
-
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <div class="section-label" style="margin:0;">투표 내역</div>
@@ -197,18 +187,10 @@
       <div class="log-wrap" id="vote-log"><div class="loading">불러오는 중...</div></div>
     </div>
 
-    <!-- 강사투표 열기/닫기 -->
-    <div class="card">
-      <div class="section-label">강사 투표 상태</div>
-      <div id="judge-status-badge" style="margin-bottom:12px;"></div>
-      <button class="btn btn-sm" id="toggle-judge-btn" onclick="toggleJudgeVote()" style="width:100%;padding:13px;">-</button>
-      <div class="msg" id="judge-time-msg"></div>
-    </div>
-
     <div class="divider"></div>
 
     <!-- 강사투표 집계 -->
-    <div style="font-size:15px;font-weight:500;margin-bottom:12px;">⭐ 강사 투표 집계</div>
+    <div class="section-title">⭐ 강사 투표 집계</div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div class="section-label" style="margin:0;">강사 투표 현황 <span id="judge-count" style="font-weight:400;color:#888;"></span></div>
@@ -220,7 +202,7 @@
     <div class="divider"></div>
 
     <!-- 최종 순위 -->
-    <div style="font-size:15px;font-weight:500;margin-bottom:4px;">🏆 최종 순위</div>
+    <div class="section-title">🏆 최종 순위</div>
     <p style="font-size:13px;color:#888;margin-bottom:12px;">관객투표 50% + 강사투표 50% 합산</p>
     <div class="card">
       <div id="final-list"><div class="loading" style="color:#aaa;font-size:13px;">관객/강사 투표 데이터가 쌓이면 여기에 표시돼요.</div></div>
@@ -230,6 +212,7 @@
       <div class="section-label">유효 좌석 현황</div>
       <div id="seat-stats" style="font-size:13px;color:#555;line-height:2;"></div>
     </div>
+
   </div>
 </div>
 
@@ -248,10 +231,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-const ADMIN_PW = '0301!!';
 const VOTE_COL = 'muestage2026_votes';
+const JUDGE_COL = 'muestage2026_judge';
 const META_COL = 'muestage2026_meta';
+const ADMIN_PW = '0301!!';
+const RANK_SCORES = [50, 45, 40, 36, 32, 28, 24, 20, 16, 12, 8];
 
 const PRESET_SEATS = {
   '가': [3,4,5,106,107,108],
@@ -270,13 +254,12 @@ let validSeats = new Set();
 let adminUnlocked = false;
 let allVotes = {};
 let voteConfig = { manualClosed: false, judgeManualClosed: false };
-let unsubscribeVotes = null;
+let unsubVotes = null;
 
+// ── 유효 좌석 ──────────────────────────────
 function buildValidSeats() {
   validSeats = new Set();
-  ['가','나','다','라'].forEach(z => {
-    PRESET_SEATS[z].forEach(n => validSeats.add(z + '-' + n));
-  });
+  ['가','나','다','라'].forEach(z => PRESET_SEATS[z].forEach(n => validSeats.add(z+'-'+n)));
   extraSeats.forEach(s => validSeats.add(s));
 }
 
@@ -284,87 +267,86 @@ function normalizeSeat(raw) {
   const r = raw.trim().toUpperCase().replace(/\s/g,'').replace(/[－−‐]/g,'-');
   const m = r.match(/^([가나다라])-?(\d+)$/);
   if (!m) return null;
-  return m[1] + '-' + parseInt(m[2]);
+  return m[1]+'-'+parseInt(m[2]);
 }
 
-function isVoteOpen() {
-  return !voteConfig.manualClosed;
-}
-
-function updateVoteView() {
-  const formView = document.getElementById('vote-form-view');
-  const closedView = document.getElementById('vote-closed-view');
-  if (isVoteOpen()) {
-    formView.style.display = 'block';
-    closedView.style.display = 'none';
-  } else {
-    formView.style.display = 'none';
-    closedView.style.display = 'block';
-    const open = new Date(voteConfig.openTime);
-    const now = new Date();
-    document.getElementById('closed-icon').textContent = '🔒';
-    document.getElementById('closed-title').textContent = '투표가 마감되었습니다';
-    document.getElementById('closed-sub').textContent = '투표가 종료되었습니다.\n결과는 시상식에서 발표됩니다.';
+function parseExtraInput(raw) {
+  const seats = [];
+  const zm = raw.trim().match(/^([가나다라])/i);
+  if (!zm) return [];
+  const zone = zm[1].toUpperCase();
+  const rest = raw.trim().slice(1).replace(/[－−‐\s]/g,'');
+  for (const part of rest.split(',')) {
+    if (!part) continue;
+    const rm = part.match(/^(\d+)-(\d+)$/);
+    if (rm) {
+      for (let n = parseInt(rm[1]); n <= parseInt(rm[2]); n++) seats.push(zone+'-'+n);
+    } else if (/^\d+$/.test(part)) {
+      seats.push(zone+'-'+parseInt(part));
+    }
   }
+  return seats;
 }
 
+// ── 화면 전환 ──────────────────────────────
 window.showScreen = function(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['vote','admin'][i] === name);
-  });
-  if (name === 'admin' && adminUnlocked) renderAdminStatus();
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', ['vote','admin'][i]===name));
+  if (name==='admin' && adminUnlocked) loadJudgeResult();
 };
 
-// 투표
+// ── 투표 화면 ──────────────────────────────
+function updateVoteView() {
+  const open = !voteConfig.manualClosed;
+  document.getElementById('vote-form-view').style.display = open ? 'block' : 'none';
+  document.getElementById('vote-closed-view').style.display = open ? 'none' : 'block';
+}
+
+function renderVoteOptions() {
+  document.getElementById('vote-options').innerHTML = TEAMS.map((t,i) => `
+    <label class="vote-option" onclick="selectTeam(${i})">
+      <input type="radio" name="team" value="${i}" />
+      <span class="vote-num">${i+1}</span>
+      <span class="vote-name">${t}</span>
+    </label>`).join('');
+}
+
 window.selectTeam = function(i) {
-  document.querySelectorAll('.vote-option').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+  document.querySelectorAll('.vote-option').forEach((el,idx) => el.classList.toggle('selected', idx===i));
 };
 
 window.submitVote = async function() {
-  if (!isVoteOpen()) { showMsg('vote-msg', '현재 투표 시간이 아닙니다.', 'error'); return; }
+  if (voteConfig.manualClosed) { showMsg('vote-msg','현재 투표 시간이 아닙니다.','error'); return; }
   const seat = normalizeSeat(document.getElementById('seat-input').value);
   const checked = document.querySelector('input[name=team]:checked');
-  if (!seat) { showMsg('vote-msg', '좌석 번호 형식이 맞지 않아요. 예: 나-55', 'error'); return; }
-  if (!checked) { showMsg('vote-msg', '투표할 팀을 선택해주세요.', 'error'); return; }
-  if (!validSeats.has(seat)) { showMsg('vote-msg', `'${seat}' 는 유효한 좌석이 아닙니다. 티켓의 좌석 번호를 다시 확인해주세요.`, 'error'); return; }
-
-  const voteBtn = document.getElementById('vote-btn');
-  voteBtn.disabled = true;
-  voteBtn.textContent = '처리 중...';
-
+  if (!seat) { showMsg('vote-msg','좌석 번호 형식이 맞지 않아요. 예: 나-55','error'); return; }
+  if (!checked) { showMsg('vote-msg','투표할 팀을 선택해주세요.','error'); return; }
+  if (!validSeats.has(seat)) { showMsg('vote-msg',`'${seat}' 는 유효한 좌석이 아닙니다. 티켓의 좌석 번호를 다시 확인해주세요.`,'error'); return; }
+  const btn = document.getElementById('vote-btn');
+  btn.disabled = true; btn.textContent = '처리 중...';
   try {
-    const ref = doc(db, VOTE_COL, seat);
-    const existing = await getDoc(ref);
-    if (existing.exists()) {
-      showMsg('vote-msg', `${seat} 좌석은 이미 투표했습니다.`, 'error');
-      voteBtn.disabled = false; voteBtn.textContent = '투표하기';
-      return;
-    }
+    const existing = await getDoc(doc(db, VOTE_COL, seat));
+    if (existing.exists()) { showMsg('vote-msg',`${seat} 좌석은 이미 투표했습니다.`,'error'); return; }
     const idx = Number(checked.value);
-    await setDoc(ref, { teamIdx: idx, teamName: TEAMS[idx], seat, ts: Date.now() });
-
+    await setDoc(doc(db, VOTE_COL, seat), { teamIdx: idx, teamName: TEAMS[idx], seat, ts: Date.now() });
     document.getElementById('seat-input').value = '';
-    document.querySelectorAll('input[name=team]').forEach(r => r.checked = false);
+    document.querySelectorAll('input[name=team]').forEach(r => r.checked=false);
     document.querySelectorAll('.vote-option').forEach(el => el.classList.remove('selected'));
     hideMsg('vote-msg');
-
     document.getElementById('modal-seat').textContent = seat;
     document.getElementById('modal-team').textContent = `${idx+1}번 ${TEAMS[idx]}`;
     document.getElementById('vote-modal').classList.add('show');
   } catch(e) {
-    showMsg('vote-msg', '오류가 발생했습니다. 다시 시도해주세요.', 'error');
+    showMsg('vote-msg','오류가 발생했습니다. 다시 시도해주세요.','error');
   } finally {
-    voteBtn.disabled = false; voteBtn.textContent = '투표하기';
+    btn.disabled = false; btn.textContent = '투표하기';
   }
 };
 
-window.closeModal = function() {
-  document.getElementById('vote-modal').classList.remove('show');
-};
+window.closeModal = function() { document.getElementById('vote-modal').classList.remove('show'); };
 
-// 관리자
+// ── 관리자 ──────────────────────────────────
 window.checkPw = function() {
   if (document.getElementById('pw-input').value === ADMIN_PW) {
     adminUnlocked = true;
@@ -374,7 +356,7 @@ window.checkPw = function() {
     startRealtimeVotes();
     loadJudgeResult();
   } else {
-    showMsg('pw-msg', '비밀번호가 맞지 않습니다.', 'error');
+    showMsg('pw-msg','비밀번호가 맞지 않습니다.','error');
   }
 };
 
@@ -400,71 +382,34 @@ async function saveConfig() {
   });
 }
 
+function renderAdminStatus() {
+  const vbadge = document.getElementById('vote-status-badge');
+  const vbtn = document.getElementById('toggle-vote-btn');
+  if (!voteConfig.manualClosed) {
+    vbadge.className = 'status-badge status-open'; vbadge.textContent = '🟢 관객 투표 진행 중';
+    vbtn.textContent = '관객 투표 마감'; vbtn.className = 'btn btn-red btn-sm';
+  } else {
+    vbadge.className = 'status-badge status-closed'; vbadge.textContent = '🔒 관객 투표 마감됨';
+    vbtn.textContent = '관객 투표 다시 열기'; vbtn.className = 'btn btn-black btn-sm';
+  }
+  const jbadge = document.getElementById('judge-status-badge');
+  const jbtn = document.getElementById('toggle-judge-btn');
+  if (!voteConfig.judgeManualClosed) {
+    jbadge.className = 'status-badge status-open'; jbadge.textContent = '🟢 강사 투표 진행 중';
+    jbtn.textContent = '강사 투표 마감'; jbtn.className = 'btn btn-red btn-sm';
+  } else {
+    jbadge.className = 'status-badge status-closed'; jbadge.textContent = '🔒 강사 투표 마감됨';
+    jbtn.textContent = '강사 투표 다시 열기'; jbtn.className = 'btn btn-black btn-sm';
+  }
+}
+
 window.toggleVote = async function() {
   voteConfig.manualClosed = !voteConfig.manualClosed;
   await saveConfig();
   renderAdminStatus();
   updateVoteView();
-  showMsg('time-msg', voteConfig.manualClosed ? '🔒 투표를 수동으로 마감했습니다.' : '✅ 투표를 다시 열었습니다.', voteConfig.manualClosed ? 'error' : 'success');
+  showMsg('time-msg', voteConfig.manualClosed ? '🔒 관객 투표를 마감했습니다.' : '✅ 관객 투표를 다시 열었습니다.', voteConfig.manualClosed ? 'error' : 'success');
 };
-
-function renderAdminStatus() {
-  const badge = document.getElementById('vote-status-badge');
-  const btn = document.getElementById('toggle-vote-btn');
-  if (isVoteOpen()) {
-    badge.className = 'status-badge status-open';
-    badge.textContent = '🟢 관객 투표 진행 중';
-    btn.textContent = '관객 투표 마감';
-    btn.className = 'btn btn-red btn-sm';
-  } else {
-    badge.className = 'status-badge status-closed';
-    badge.textContent = '🔒 관객 투표 마감됨';
-    btn.textContent = '관객 투표 다시 열기';
-    btn.className = 'btn btn-black btn-sm';
-  }
-
-  const jbadge = document.getElementById('judge-status-badge');
-  const jbtn = document.getElementById('toggle-judge-btn');
-  if (!voteConfig.judgeManualClosed) {
-    jbadge.className = 'status-badge status-open';
-    jbadge.textContent = '🟢 강사 투표 진행 중';
-    jbtn.textContent = '강사 투표 마감';
-    jbtn.className = 'btn btn-red btn-sm';
-  } else {
-    jbadge.className = 'status-badge status-closed';
-    jbadge.textContent = '🔒 강사 투표 마감됨';
-    jbtn.textContent = '강사 투표 다시 열기';
-    jbtn.className = 'btn btn-black btn-sm';
-  }
-}
-
-// 범위 포함 좌석 파싱: "라25-27,34-37,45-48" → ['라-25','라-26','라-27','라-34',...]
-// 단일 좌석: "나-55" 또는 "나55"
-function parseExtraInput(raw) {
-  const seats = [];
-  // 구역 문자 추출
-  const zoneMatch = raw.trim().match(/^([가나다라])/i);
-  if (!zoneMatch) return [];
-  const zone = zoneMatch[1].toUpperCase();
-
-  // 구역 이후 숫자/범위 부분
-  const rest = raw.trim().slice(1).replace(/[－−‐\s]/g, '');
-  // 콤마로 분리
-  const parts = rest.split(',');
-  for (const part of parts) {
-    if (!part) continue;
-    const rangeMatch = part.match(/^(\d+)-(\d+)$/);
-    if (rangeMatch) {
-      const from = parseInt(rangeMatch[1]);
-      const to = parseInt(rangeMatch[2]);
-      if (from > to) continue;
-      for (let n = from; n <= to; n++) seats.push(zone + '-' + n);
-    } else if (/^\d+$/.test(part)) {
-      seats.push(zone + '-' + parseInt(part));
-    }
-  }
-  return seats;
-}
 
 window.toggleJudgeVote = async function() {
   voteConfig.judgeManualClosed = !voteConfig.judgeManualClosed;
@@ -473,39 +418,34 @@ window.toggleJudgeVote = async function() {
   showMsg('judge-time-msg', voteConfig.judgeManualClosed ? '🔒 강사 투표를 마감했습니다.' : '✅ 강사 투표를 다시 열었습니다.', voteConfig.judgeManualClosed ? 'error' : 'success');
 };
 
-
+window.addExtraSeat = function() {
   const raw = document.getElementById('extra-input').value;
   if (!raw.trim()) return;
   const parsed = parseExtraInput(raw);
-  if (!parsed.length) { showMsg('extra-msg', '형식이 맞지 않아요. 예: 나-55 또는 라25-27,34-37', 'error'); return; }
+  if (!parsed.length) { showMsg('extra-msg','형식이 맞지 않아요. 예: 나-55 또는 라25-27,34-37','error'); return; }
   let added = 0;
   for (const seat of parsed) {
-    if (extraSeats.includes(seat) || (PRESET_SEATS[seat[0]] || []).includes(parseInt(seat.split('-')[1]))) continue;
-    extraSeats.push(seat);
-    added++;
+    if (extraSeats.includes(seat) || (PRESET_SEATS[seat[0]]||[]).includes(parseInt(seat.split('-')[1]))) continue;
+    extraSeats.push(seat); added++;
   }
   document.getElementById('extra-input').value = '';
   renderExtraTags();
-  if (added > 0) showMsg('extra-msg', `✅ ${added}석 추가됨`, 'success');
-  else showMsg('extra-msg', '추가할 새 좌석이 없어요. (이미 등록됨)', 'error');
+  added > 0 ? showMsg('extra-msg',`✅ ${added}석 추가됨`,'success') : showMsg('extra-msg','추가할 새 좌석이 없어요.','error');
 };
 
 window.removeExtra = function(i) { extraSeats.splice(i,1); renderExtraTags(); };
 
 function renderExtraTags() {
-  const el = document.getElementById('extra-tags');
-  el.innerHTML = extraSeats.length
+  document.getElementById('extra-tags').innerHTML = extraSeats.length
     ? extraSeats.map((s,i) => `<span class="extra-tag">${s}<button onclick="removeExtra(${i})">✕</button></span>`).join('')
     : '<span style="font-size:13px;color:#aaa;">추가된 좌석 없음</span>';
 }
 
 window.saveExtraSeats = async function() {
   try {
-    await saveConfig();
-    buildValidSeats();
-    renderSeatStats();
-    showMsg('extra-msg', `✅ 저장 완료! 현장 좌석 ${extraSeats.length}석 반영됨`, 'success');
-  } catch(e) { showMsg('extra-msg', '저장 중 오류가 발생했습니다.', 'error'); }
+    await saveConfig(); buildValidSeats(); renderSeatStats();
+    showMsg('extra-msg',`✅ 저장 완료! 현장 좌석 ${extraSeats.length}석 반영됨`,'success');
+  } catch(e) { showMsg('extra-msg','저장 중 오류.','error'); }
 };
 
 window.resetVotes = async function() {
@@ -513,133 +453,122 @@ window.resetVotes = async function() {
   try {
     const snap = await getDocs(collection(db, VOTE_COL));
     await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
-    showMsg('admin-msg', '🗑️ 투표 내역이 초기화되었습니다.', 'error');
-  } catch(e) { showMsg('admin-msg', '초기화 중 오류가 발생했습니다.', 'error'); }
+    showMsg('admin-msg','🗑️ 투표 내역이 초기화되었습니다.','error');
+  } catch(e) { showMsg('admin-msg','초기화 중 오류.','error'); }
 };
 
-// 실시간 집계
+function renderSeatStats() {
+  document.getElementById('seat-stats').innerHTML =
+    ['가','나','다','라'].map(z => {
+      const preset = PRESET_SEATS[z].length;
+      const extra = extraSeats.filter(s => s.startsWith(z+'-')).length;
+      return `<div>${z}열: ${preset+extra}석${extra ? ` (+현장 ${extra})` : ''}</div>`;
+    }).join('') + `<div style="margin-top:8px;font-weight:500;">합계: ${validSeats.size}석</div>`;
+}
+
+// ── 실시간 관객투표 집계 ────────────────────
 function startRealtimeVotes() {
-  if (unsubscribeVotes) unsubscribeVotes();
-  unsubscribeVotes = onSnapshot(collection(db, VOTE_COL), (snap) => {
+  if (unsubVotes) unsubVotes();
+  unsubVotes = onSnapshot(collection(db, VOTE_COL), snap => {
     allVotes = {};
     snap.forEach(d => { allVotes[d.id] = d.data(); });
-    renderResult();
+    renderAudienceResult();
+    loadJudgeResult();
   });
 }
 
-function renderResult() {
+function renderAudienceResult() {
   const total = Object.keys(allVotes).length;
   document.getElementById('total-votes').textContent = total;
   document.getElementById('remain-votes').textContent = validSeats.size > 0 ? validSeats.size - total : '-';
 
   const counts = {};
-  TEAMS.forEach((_, i) => counts[i] = 0);
+  TEAMS.forEach((_,i) => counts[i] = 0);
   Object.values(allVotes).forEach(v => { if (counts[v.teamIdx] !== undefined) counts[v.teamIdx]++; });
 
-  const sorted = TEAMS.map((t, i) => ({ name: t, idx: i, count: counts[i] }))
-    .sort((a, b) => b.count - a.count);
-
+  const sorted = TEAMS.map((t,i) => ({name:t,idx:i,count:counts[i]})).sort((a,b) => b.count-a.count);
   const medals = ['🥇','🥈','🥉'];
-  document.getElementById('result-list').innerHTML = sorted.map((t, rank) => {
-    const pct = total ? Math.round(t.count / total * 100) : 0;
+  document.getElementById('result-list').innerHTML = sorted.map((t,rank) => {
+    const pct = total ? Math.round(t.count/total*100) : 0;
     return `<div class="result-item">
-      <div class="result-meta">
-        <span class="result-name">${medals[rank] || rank+1+'위'} ${t.idx+1}. ${t.name}</span>
-        <span>${t.count}표 (${pct}%)</span>
-      </div>
+      <div class="result-meta"><span class="result-name">${medals[rank]||rank+1+'위'} ${t.idx+1}. ${t.name}</span><span>${t.count}표 (${pct}%)</span></div>
       <div class="result-bar-bg"><div class="result-bar" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 
   const entries = Object.entries(allVotes).sort((a,b) => (b[1].ts||0)-(a[1].ts||0));
   document.getElementById('vote-log').innerHTML = entries.length
-    ? entries.map(([seat, v]) => `<div class="log-item"><span>${seat}</span><span>${v.teamIdx+1}번 ${v.teamName}</span></div>`).join('')
+    ? entries.map(([seat,v]) => `<div class="log-item"><span>${seat}</span><span>${v.teamIdx+1}번 ${v.teamName}</span></div>`).join('')
     : '<p style="font-size:13px;color:#aaa;padding:8px 0;">투표 내역 없음</p>';
-
-  // 관객투표 업데이트될 때 최종순위도 재계산
-  loadJudgeResult();
 }
 
-// 강사 투표 집계
+window.exportCSV = function() {
+  const rows = [['좌석번호','순번','강사이름']];
+  Object.entries(allVotes).forEach(([seat,v]) => rows.push([seat, v.teamIdx+1, v.teamName]));
+  const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'muestage2026_투표결과.csv';
+  a.click();
+};
+
+// ── 강사투표 집계 ───────────────────────────
 window.loadJudgeResult = async function() {
   try {
-    const snap = await getDocs(collection(db, 'muestage2026_judge'));
+    const snap = await getDocs(collection(db, JUDGE_COL));
     const judges = {};
     snap.forEach(d => { judges[d.id] = d.data(); });
 
     const count = Object.keys(judges).length;
     document.getElementById('judge-count').textContent = `(${count}/11명 완료)`;
 
-    // 팀별 강사 득표수 집계
     const judgeCounts = {};
-    TEAMS.forEach((_, i) => judgeCounts[i] = 0);
-    Object.values(judges).forEach(j => {
-      if (j.voteTeamIdx !== undefined) judgeCounts[j.voteTeamIdx]++;
-    });
+    TEAMS.forEach((_,i) => judgeCounts[i] = 0);
+    Object.values(judges).forEach(j => { if (j.voteTeamIdx !== undefined) judgeCounts[j.voteTeamIdx]++; });
 
-    // 득표수 → 순위 → 점수
-    const RANK_SCORES = [50, 45, 40, 36, 32, 28, 24, 20, 16, 12, 8];
-    const judgeSorted = TEAMS.map((_, i) => ({ idx: i, count: judgeCounts[i] }))
-      .sort((a, b) => b.count - a.count);
+    const judgeSorted = TEAMS.map((_,i) => ({idx:i, count:judgeCounts[i]})).sort((a,b) => b.count-a.count);
     const judgeScores = {};
-    judgeSorted.forEach((t, rank) => { judgeScores[t.idx] = RANK_SCORES[rank]; });
+    judgeSorted.forEach((t,rank) => { judgeScores[t.idx] = RANK_SCORES[rank]; });
 
-    // 강사투표 현황 표시
-    const maxCount = Math.max(...Object.values(judgeCounts)) || 1;
+    const maxCount = Math.max(...Object.values(judgeCounts), 1);
     const medals = ['🥇','🥈','🥉'];
-    document.getElementById('judge-list').innerHTML = judgeSorted.map((t, rank) => {
-      const pct = Math.round(t.count / maxCount * 100);
+    document.getElementById('judge-list').innerHTML = judgeSorted.map((t,rank) => {
+      const pct = Math.round(t.count/maxCount*100);
       return `<div class="result-item">
-        <div class="result-meta">
-          <span class="result-name">${medals[rank] || rank+1+'위'} ${t.idx+1}. ${TEAMS[t.idx]}</span>
-          <span>${t.count}표 → ${judgeScores[t.idx]}pt</span>
-        </div>
+        <div class="result-meta"><span class="result-name">${medals[rank]||rank+1+'위'} ${t.idx+1}. ${TEAMS[t.idx]}</span><span>${t.count}표 → ${judgeScores[t.idx]}pt</span></div>
         <div class="result-bar-bg"><div class="result-bar" style="width:${pct}%"></div></div>
       </div>`;
     }).join('');
 
-    // 최종 순위 합산
     renderFinalResult(judgeScores);
   } catch(e) { console.error(e); }
 };
 
+// ── 최종 순위 ───────────────────────────────
 function renderFinalResult(judgeScores) {
-  // 점수표 B: 1위=50, 2위=45, 3위=40, 4위=36, 5위=32, 6위=28, 7위=24, 8위=20, 9위=16, 10위=12, 11위=8
-  const RANK_SCORES = [50, 45, 40, 36, 32, 28, 24, 20, 16, 12, 8];
-
-  const audienceVotes = allVotes;
-
-  // 관객투표: 득표수 → 순위 → 점수
+  const total = Object.keys(allVotes).length;
   const audienceCounts = {};
-  TEAMS.forEach((_, i) => audienceCounts[i] = 0);
-  Object.values(audienceVotes).forEach(v => { if (audienceCounts[v.teamIdx] !== undefined) audienceCounts[v.teamIdx]++; });
+  TEAMS.forEach((_,i) => audienceCounts[i] = 0);
+  Object.values(allVotes).forEach(v => { if (audienceCounts[v.teamIdx] !== undefined) audienceCounts[v.teamIdx]++; });
 
-  const audienceSorted = TEAMS.map((_, i) => ({ idx: i, count: audienceCounts[i] }))
-    .sort((a, b) => b.count - a.count);
+  const audienceSorted = TEAMS.map((_,i) => ({idx:i, count:audienceCounts[i]})).sort((a,b) => b.count-a.count);
   const audienceScores = {};
-  audienceSorted.forEach((t, rank) => { audienceScores[t.idx] = RANK_SCORES[rank]; });
+  audienceSorted.forEach((t,rank) => { audienceScores[t.idx] = RANK_SCORES[rank]; });
 
-  // 강사투표: 합산 점수 → 순위 → 점수
-  const judgeSorted = TEAMS.map((_, i) => ({ idx: i, score: judgeScores[i] || 0 }))
-    .sort((a, b) => b.score - a.score);
-  const judgeRankScores = {};
-  judgeSorted.forEach((t, rank) => { judgeRankScores[t.idx] = RANK_SCORES[rank]; });
-
-  // 합산
-  const finalScores = TEAMS.map((t, i) => ({
+  const finalScores = TEAMS.map((t,i) => ({
     name: t, idx: i,
     audienceScore: audienceScores[i] || 0,
-    judgeScore: judgeRankScores[i] || 0,
-    total: (audienceScores[i] || 0) + (judgeRankScores[i] || 0),
-  })).sort((a, b) => b.total - a.total);
+    judgeScore: judgeScores[i] || 0,
+    total: (audienceScores[i]||0) + (judgeScores[i]||0),
+  })).sort((a,b) => b.total-a.total);
 
   const maxTotal = finalScores[0]?.total || 1;
-  document.getElementById('final-list').innerHTML = finalScores.map((t, rank) => {
-    const pct = Math.round(t.total / maxTotal * 100);
-    const medal = rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : `${rank+1}위`;
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('final-list').innerHTML = finalScores.map((t,rank) => {
+    const pct = Math.round(t.total/maxTotal*100);
     return `<div class="result-item">
       <div class="result-meta">
-        <span class="result-name">${medal} ${t.idx+1}. ${t.name}</span>
+        <span class="result-name">${medals[rank]||rank+1+'위'} ${t.idx+1}. ${t.name}</span>
         <span style="font-size:12px;color:#aaa;">관객 ${t.audienceScore}pt + 강사 ${t.judgeScore}pt = <strong style="color:#111;">${t.total}pt</strong></span>
       </div>
       <div class="result-bar-bg"><div class="result-bar" style="width:${pct}%"></div></div>
@@ -647,54 +576,25 @@ function renderFinalResult(judgeScores) {
   }).join('');
 }
 
-window.exportCSV = function() {
-  const rows = [['좌석번호','순번','강사이름']];
-  Object.entries(allVotes).forEach(([seat, v]) => rows.push([seat, v.teamIdx+1, v.teamName]));
-  const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-  a.download = 'muestage2026_투표결과.csv';
-  a.click();
-};
-
-function renderSeatStats() {
-  const zones = ['가','나','다','라'];
-  document.getElementById('seat-stats').innerHTML = zones.map(z => {
-    const preset = PRESET_SEATS[z].length;
-    const extra = extraSeats.filter(s => s.startsWith(z+'-')).length;
-    return `<div>${z}열: ${preset + extra}석${extra ? ` (+현장 ${extra})` : ''}</div>`;
-  }).join('') + `<div style="margin-top:8px;font-weight:500;">합계: ${validSeats.size}석</div>`;
-}
-
-function renderVoteOptions() {
-  document.getElementById('vote-options').innerHTML = TEAMS.map((t, i) => `
-    <label class="vote-option" onclick="selectTeam(${i})">
-      <input type="radio" name="team" value="${i}" />
-      <span class="vote-num">${i+1}</span>
-      <span class="vote-name">${t}</span>
-    </label>
-  `).join('');
-}
-
+// ── 메시지 ──────────────────────────────────
 function showMsg(id, text, type) {
   const el = document.getElementById(id);
-  el.textContent = text;
-  el.className = 'msg show msg-' + type;
-  if (type === 'success') setTimeout(() => hideMsg(id), 4000);
+  el.textContent = text; el.className = 'msg show msg-'+type;
+  if (type==='success') setTimeout(() => hideMsg(id), 4000);
 }
 function hideMsg(id) { document.getElementById(id).className = 'msg'; }
 
-// 초기화
+// ── 초기화 ──────────────────────────────────
 buildValidSeats();
 renderVoteOptions();
 
-// 페이지 로드 시 config 불러와서 투표 오픈 여부 확인
 (async () => {
   try {
     const snap = await getDoc(doc(db, META_COL, 'config'));
     if (snap.exists()) {
       const d = snap.data();
       if (d.manualClosed !== undefined) voteConfig.manualClosed = d.manualClosed;
+      if (d.judgeManualClosed !== undefined) voteConfig.judgeManualClosed = d.judgeManualClosed;
       if (d.extraSeats) { extraSeats = d.extraSeats; buildValidSeats(); }
     }
   } catch(e) {}
