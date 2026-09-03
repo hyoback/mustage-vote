@@ -143,16 +143,11 @@
 
   <div id="admin-panel" style="display:none;">
 
-    <!-- 투표 시간 설정 -->
+    <!-- 투표 열기/닫기 -->
     <div class="card">
-      <div class="section-label">투표 시간 설정</div>
-      <div id="vote-status-badge"></div>
-      <label style="font-size:13px;color:#888;display:block;margin-bottom:4px;">투표 시작 시각</label>
-      <input type="datetime-local" id="vote-open-time" style="margin-bottom:10px;" />
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-black btn-sm" onclick="saveVoteTime()">시각 저장</button>
-        <button class="btn btn-outline btn-sm" id="toggle-vote-btn" onclick="toggleVote()">-</button>
-      </div>
+      <div class="section-label">투표 상태</div>
+      <div id="vote-status-badge" style="margin-bottom:12px;"></div>
+      <button class="btn btn-sm" id="toggle-vote-btn" onclick="toggleVote()" style="width:100%;padding:13px;">-</button>
       <div class="msg" id="time-msg"></div>
     </div>
 
@@ -161,7 +156,7 @@
       <div class="section-label">현장 결제 / 초대권 좌석 추가</div>
       <p style="font-size:13px;color:#888;margin-bottom:10px;">예매 외 좌석을 추가하면 투표가 허용돼요</p>
       <div style="display:flex;gap:8px;">
-        <input type="text" id="extra-input" placeholder="예: 나-55" style="margin:0;flex:1;" onkeydown="if(event.key==='Enter')addExtraSeat()" />
+        <input type="text" id="extra-input" placeholder="예: 라25-27,34-37 또는 나-55" style="margin:0;flex:1;" onkeydown="if(event.key==='Enter')addExtraSeat()" />
         <button class="btn btn-black btn-sm" onclick="addExtraSeat()">추가</button>
       </div>
       <div id="extra-tags" style="margin-top:10px;"></div>
@@ -244,7 +239,7 @@ let extraSeats = [];
 let validSeats = new Set();
 let adminUnlocked = false;
 let allVotes = {};
-let voteConfig = { openTime: '2026-09-05T19:00', manualClosed: false };
+let voteConfig = { manualClosed: false };
 let unsubscribeVotes = null;
 
 function buildValidSeats() {
@@ -263,9 +258,7 @@ function normalizeSeat(raw) {
 }
 
 function isVoteOpen() {
-  if (voteConfig.manualClosed) return false;
-  const open = new Date(voteConfig.openTime);
-  return Date.now() >= open.getTime();
+  return !voteConfig.manualClosed;
 }
 
 function updateVoteView() {
@@ -279,16 +272,9 @@ function updateVoteView() {
     closedView.style.display = 'block';
     const open = new Date(voteConfig.openTime);
     const now = new Date();
-    if (voteConfig.manualClosed) {
-      document.getElementById('closed-icon').textContent = '🔒';
-      document.getElementById('closed-title').textContent = '투표가 마감되었습니다';
-      document.getElementById('closed-sub').textContent = '투표가 종료되었습니다.\n결과는 시상식에서 발표됩니다.';
-    } else if (now < open) {
-      document.getElementById('closed-icon').textContent = '⏳';
-      document.getElementById('closed-title').textContent = '투표 준비 중';
-      const h = open.getHours(), m2 = String(open.getMinutes()).padStart(2,'0');
-      document.getElementById('closed-sub').textContent = `투표는 ${open.getMonth()+1}월 ${open.getDate()}일 ${h}시 ${m2}분에 시작됩니다.`;
-    }
+    document.getElementById('closed-icon').textContent = '🔒';
+    document.getElementById('closed-title').textContent = '투표가 마감되었습니다';
+    document.getElementById('closed-sub').textContent = '투표가 종료되었습니다.\n결과는 시상식에서 발표됩니다.';
   }
 }
 
@@ -366,11 +352,9 @@ async function loadConfig() {
     const snap = await getDoc(doc(db, META_COL, 'config'));
     if (snap.exists()) {
       const d = snap.data();
-      if (d.openTime) voteConfig.openTime = d.openTime;
       if (d.manualClosed !== undefined) voteConfig.manualClosed = d.manualClosed;
       if (d.extraSeats) { extraSeats = d.extraSeats; buildValidSeats(); renderExtraTags(); renderSeatStats(); }
     }
-    document.getElementById('vote-open-time').value = voteConfig.openTime;
     renderAdminStatus();
     updateVoteView();
   } catch(e) { console.error(e); }
@@ -378,21 +362,10 @@ async function loadConfig() {
 
 async function saveConfig() {
   await setDoc(doc(db, META_COL, 'config'), {
-    openTime: voteConfig.openTime,
     manualClosed: voteConfig.manualClosed,
     extraSeats,
   });
 }
-
-window.saveVoteTime = async function() {
-  const val = document.getElementById('vote-open-time').value;
-  if (!val) { showMsg('time-msg', '시각을 입력해주세요.', 'error'); return; }
-  voteConfig.openTime = val;
-  await saveConfig();
-  renderAdminStatus();
-  updateVoteView();
-  showMsg('time-msg', '✅ 투표 시작 시각이 저장되었습니다.', 'success');
-};
 
 window.toggleVote = async function() {
   voteConfig.manualClosed = !voteConfig.manualClosed;
@@ -423,17 +396,49 @@ function renderAdminStatus() {
   }
 }
 
+// 범위 포함 좌석 파싱: "라25-27,34-37,45-48" → ['라-25','라-26','라-27','라-34',...]
+// 단일 좌석: "나-55" 또는 "나55"
+function parseExtraInput(raw) {
+  const seats = [];
+  // 구역 문자 추출
+  const zoneMatch = raw.trim().match(/^([가나다라])/i);
+  if (!zoneMatch) return [];
+  const zone = zoneMatch[1].toUpperCase();
+
+  // 구역 이후 숫자/범위 부분
+  const rest = raw.trim().slice(1).replace(/[－−‐\s]/g, '');
+  // 콤마로 분리
+  const parts = rest.split(',');
+  for (const part of parts) {
+    if (!part) continue;
+    const rangeMatch = part.match(/^(\d+)-(\d+)$/);
+    if (rangeMatch) {
+      const from = parseInt(rangeMatch[1]);
+      const to = parseInt(rangeMatch[2]);
+      if (from > to) continue;
+      for (let n = from; n <= to; n++) seats.push(zone + '-' + n);
+    } else if (/^\d+$/.test(part)) {
+      seats.push(zone + '-' + parseInt(part));
+    }
+  }
+  return seats;
+}
+
 window.addExtraSeat = function() {
   const raw = document.getElementById('extra-input').value;
-  const seat = normalizeSeat(raw);
-  if (!seat) { showMsg('extra-msg', '형식이 맞지 않아요. 예: 나-55', 'error'); return; }
-  if (extraSeats.includes(seat) || (PRESET_SEATS[seat[0]] || []).includes(parseInt(seat.split('-')[1]))) {
-    showMsg('extra-msg', `${seat} 는 이미 등록된 좌석이에요.`, 'error'); return;
+  if (!raw.trim()) return;
+  const parsed = parseExtraInput(raw);
+  if (!parsed.length) { showMsg('extra-msg', '형식이 맞지 않아요. 예: 나-55 또는 라25-27,34-37', 'error'); return; }
+  let added = 0;
+  for (const seat of parsed) {
+    if (extraSeats.includes(seat) || (PRESET_SEATS[seat[0]] || []).includes(parseInt(seat.split('-')[1]))) continue;
+    extraSeats.push(seat);
+    added++;
   }
-  extraSeats.push(seat);
   document.getElementById('extra-input').value = '';
   renderExtraTags();
-  hideMsg('extra-msg');
+  if (added > 0) showMsg('extra-msg', `✅ ${added}석 추가됨`, 'success');
+  else showMsg('extra-msg', '추가할 새 좌석이 없어요. (이미 등록됨)', 'error');
 };
 
 window.removeExtra = function(i) { extraSeats.splice(i,1); renderExtraTags(); };
@@ -550,14 +555,11 @@ renderVoteOptions();
     const snap = await getDoc(doc(db, META_COL, 'config'));
     if (snap.exists()) {
       const d = snap.data();
-      if (d.openTime) voteConfig.openTime = d.openTime;
       if (d.manualClosed !== undefined) voteConfig.manualClosed = d.manualClosed;
       if (d.extraSeats) { extraSeats = d.extraSeats; buildValidSeats(); }
     }
   } catch(e) {}
   updateVoteView();
-  // 1분마다 시간 체크 (자동 오픈)
-  setInterval(updateVoteView, 60000);
 })();
 </script>
 </body>
