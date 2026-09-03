@@ -199,6 +199,14 @@
       <div id="judge-list"><div class="loading">불러오는 중...</div></div>
     </div>
 
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div class="section-label" style="margin:0;">강사 투표 내역</div>
+        <button class="btn btn-outline btn-sm" onclick="resetJudgeVotes()" style="color:#e03;border-color:#fcc;">초기화</button>
+      </div>
+      <div class="log-wrap" id="judge-log"><div class="loading">불러오는 중...</div></div>
+    </div>
+
     <div class="divider"></div>
 
     <!-- 최종 순위 -->
@@ -540,8 +548,24 @@ window.loadJudgeResult = async function() {
       </div>`;
     }).join('');
 
+    // 강사 투표 내역
+    const entries = Object.entries(judges).sort((a,b) => (b[1].ts||0)-(a[1].ts||0));
+    document.getElementById('judge-log').innerHTML = entries.length
+      ? entries.map(([,v]) => `<div class="log-item"><span>${v.judgeTeamName}</span><span>→ ${v.voteTeamName}</span></div>`).join('')
+      : '<p style="font-size:13px;color:#aaa;padding:8px 0;">투표 내역 없음</p>';
+
     renderFinalResult(judgeScores);
   } catch(e) { console.error(e); }
+};
+
+window.resetJudgeVotes = async function() {
+  if (!confirm('강사 투표 내역을 모두 초기화할까요? 되돌릴 수 없어요!')) return;
+  try {
+    const snap = await getDocs(collection(db, JUDGE_COL));
+    await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
+    loadJudgeResult();
+    showMsg('admin-msg','🗑️ 강사 투표 내역이 초기화되었습니다.','error');
+  } catch(e) { showMsg('admin-msg','초기화 중 오류.','error'); }
 };
 
 // ── 최종 순위 ───────────────────────────────
