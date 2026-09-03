@@ -103,7 +103,6 @@
 
 <div class="nav">
   <button class="nav-btn active" onclick="showScreen('vote')">🗳️ 투표</button>
-  <button class="nav-btn" onclick="showScreen('result')">📊 결과</button>
   <button class="nav-btn" onclick="showScreen('admin')">⚙️ 관리자</button>
 </div>
 
@@ -117,36 +116,6 @@
     <div id="vote-options"></div>
     <button class="btn btn-black" onclick="submitVote()" style="margin-top:8px;">투표하기</button>
     <div class="msg" id="vote-msg"></div>
-  </div>
-</div>
-
-<!-- 결과 화면 -->
-<div class="screen" id="screen-result">
-  <div class="stats-grid">
-    <div class="stat-box">
-      <div class="stat-num" id="total-votes">0</div>
-      <div class="stat-label">총 투표 수</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-num" id="remain-votes">-</div>
-      <div class="stat-label">미투표 좌석</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-      <div class="section-label" style="margin:0;">득표 현황</div>
-      <button class="btn btn-outline btn-sm" onclick="renderResult()">새로고침</button>
-    </div>
-    <div id="result-list"></div>
-  </div>
-
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <div class="section-label" style="margin:0;">투표 내역</div>
-      <button class="btn btn-outline btn-sm" onclick="exportCSV()">CSV 저장</button>
-    </div>
-    <div class="log-wrap" id="vote-log"></div>
   </div>
 </div>
 
@@ -190,11 +159,40 @@
       <div class="section-label">유효 좌석 현황</div>
       <div id="seat-stats" style="font-size:13px;color:#555;line-height:2;"></div>
     </div>
+
+    <div class="divider"></div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-num" id="total-votes">0</div>
+        <div class="stat-label">총 투표 수</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="remain-votes">-</div>
+        <div class="stat-label">미투표 좌석</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-label" style="margin:0;">득표 현황</div>
+        <button class="btn btn-outline btn-sm" onclick="renderResult()">새로고침</button>
+      </div>
+      <div id="result-list"></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div class="section-label" style="margin:0;">투표 내역</div>
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">CSV 저장</button>
+      </div>
+      <div class="log-wrap" id="vote-log"></div>
+    </div>
   </div>
 </div>
 
 <script>
-const ADMIN_PW = 'muestage2026';
+const ADMIN_PW = '0301!!';
 
 const PRESET_SEATS = {
   '가': [3,4,5,106,107,108],
@@ -228,9 +226,8 @@ function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['vote','result','admin'][i] === name);
+    b.classList.toggle('active', ['vote','admin'][i] === name);
   });
-  if (name === 'result') renderResult();
   if (name === 'admin' && state.adminUnlocked) showAdminPanel();
 }
 
@@ -332,6 +329,7 @@ function showAdminPanel() {
   renderTeams();
   renderExtraTags();
   renderSeatStats();
+  renderResult();
 }
 
 function renderTeams() {
