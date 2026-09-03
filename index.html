@@ -7,33 +7,15 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f5f5f5; color: #111; min-height: 100vh; }
-
-  /* 네비 */
   .nav { display: flex; background: #fff; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
-  .nav-btn { flex: 1; padding: 14px 0; font-size: 14px; border: none; background: transparent; color: #888; cursor: pointer; transition: color 0.15s, border-bottom 0.15s; border-bottom: 2px solid transparent; }
+  .nav-btn { flex: 1; padding: 14px 0; font-size: 14px; border: none; background: transparent; color: #888; cursor: pointer; transition: color 0.15s; border-bottom: 2px solid transparent; }
   .nav-btn.active { color: #111; border-bottom: 2px solid #111; font-weight: 500; }
-
-  /* 화면 전환 */
   .screen { display: none; padding: 20px 16px; max-width: 480px; margin: 0 auto; }
   .screen.active { display: block; }
-
-  /* 카드 */
   .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-
-  /* 타이포 */
-  .page-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .page-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
   .section-label { font-size: 12px; color: #888; font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  /* 인풋 */
-  input[type=text], input[type=password] {
-    width: 100%; padding: 13px 14px; border: 1px solid #ddd; border-radius: 8px;
-    font-size: 16px; outline: none; transition: border-color 0.15s;
-    font-family: inherit; background: #fff; color: #111;
-  }
-  input[type=text]:focus, input[type=password]:focus { border-color: #111; }
-
-  /* 버튼 */
+  input[type=text], input[type=password], input[type=datetime-local] { width: 100%; padding: 13px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit; background: #fff; color: #111; }
+  input:focus { border-color: #111; }
   .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; font-family: inherit; }
   .btn-black { background: #111; color: #fff; }
   .btn-black:hover { opacity: 0.85; }
@@ -42,56 +24,60 @@
   .btn-sm { width: auto; padding: 8px 16px; font-size: 13px; }
   .btn-danger { background: #fff; color: #e03; border: 1px solid #fcc; }
   .btn-danger:hover { background: #fff5f5; }
-
-  /* 투표 옵션 */
+  .btn-red { background: #e03; color: #fff; }
+  .btn-red:hover { opacity: 0.85; }
   .vote-option { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid #e5e5e5; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; user-select: none; }
   .vote-option:hover { border-color: #bbb; background: #fafafa; }
   .vote-option.selected { border-color: #111; background: #f8f8f8; }
   .vote-option input[type=radio] { width: 18px; height: 18px; cursor: pointer; accent-color: #111; flex-shrink: 0; }
   .vote-num { font-size: 13px; color: #aaa; min-width: 30px; }
   .vote-name { font-size: 15px; font-weight: 500; }
-
-  /* 메시지 */
   .msg { padding: 12px 14px; border-radius: 8px; font-size: 14px; margin-top: 12px; display: none; }
   .msg.show { display: block; }
   .msg-success { background: #f0fdf4; color: #166534; }
   .msg-error { background: #fef2f2; color: #991b1b; }
-
-  /* 결과 바 */
+  .msg-info { background: #eff6ff; color: #1e40af; }
+  .msg-warning { background: #fffbeb; color: #92400e; }
   .result-item { margin-bottom: 14px; }
   .result-meta { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 5px; }
   .result-name { font-weight: 500; color: #111; }
   .result-bar-bg { height: 8px; background: #f0f0f0; border-radius: 99px; overflow: hidden; }
   .result-bar { height: 8px; background: #111; border-radius: 99px; transition: width 0.5s ease; }
-
-  /* 스탯 */
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
   .stat-box { background: #fff; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
   .stat-num { font-size: 26px; font-weight: 700; }
   .stat-label { font-size: 12px; color: #888; margin-top: 2px; }
-
-  /* 투표 로그 */
   .log-wrap { max-height: 200px; overflow-y: auto; }
   .log-item { padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: #555; display: flex; justify-content: space-between; }
-
-  /* 관리자 */
   .admin-gate { max-width: 340px; margin: 60px auto; padding: 0 16px; }
   .extra-tag { display: inline-flex; align-items: center; gap: 6px; background: #f0f0f0; border-radius: 99px; padding: 4px 10px; font-size: 12px; margin: 3px; }
   .extra-tag button { background: none; border: none; cursor: pointer; color: #e03; font-size: 14px; padding: 0; line-height: 1; }
-  .team-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .team-row input { flex: 1; padding: 10px 12px; font-size: 14px; }
-  .team-idx { font-size: 13px; color: #aaa; min-width: 28px; }
-
   .divider { height: 1px; background: #f0f0f0; margin: 16px 0; }
-
-  .badge-1 { color: #b8860b; }
-  .badge-2 { color: #888; }
-  .badge-3 { color: #a0522d; }
-
-  /* 헤더 */
   .header { background: #111; color: #fff; padding: 24px 16px 20px; text-align: center; }
   .header-title { font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
   .header-sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+  .loading { text-align: center; padding: 30px 0; color: #aaa; font-size: 14px; }
+  .status-badge { display: inline-block; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; margin-bottom: 12px; }
+  .status-open { background: #f0fdf4; color: #166534; }
+  .status-closed { background: #fef2f2; color: #991b1b; }
+  .status-pending { background: #fffbeb; color: #92400e; }
+
+  /* 투표 완료 모달 */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .modal-overlay.show { opacity: 1; pointer-events: all; }
+  .modal-box { background: #fff; border-radius: 20px; padding: 36px 28px; max-width: 320px; width: 90%; text-align: center; transform: scale(0.92); transition: transform 0.2s; }
+  .modal-overlay.show .modal-box { transform: scale(1); }
+  .modal-icon { font-size: 56px; margin-bottom: 16px; }
+  .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .modal-sub { font-size: 14px; color: #888; margin-bottom: 24px; line-height: 1.6; }
+  .modal-seat { font-size: 16px; font-weight: 600; color: #111; background: #f5f5f5; border-radius: 8px; padding: 8px 16px; display: inline-block; margin-bottom: 6px; }
+  .modal-team { font-size: 13px; color: #888; margin-bottom: 20px; }
+
+  /* 투표 불가 화면 */
+  .vote-closed { text-align: center; padding: 48px 20px; }
+  .vote-closed-icon { font-size: 48px; margin-bottom: 16px; }
+  .vote-closed-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .vote-closed-sub { font-size: 14px; color: #888; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -106,16 +92,40 @@
   <button class="nav-btn" onclick="showScreen('admin')">⚙️ 관리자</button>
 </div>
 
+<!-- 투표 완료 모달 -->
+<div class="modal-overlay" id="vote-modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-icon">🎉</div>
+    <div class="modal-title">투표 완료!</div>
+    <div class="modal-seat" id="modal-seat"></div>
+    <div class="modal-team" id="modal-team"></div>
+    <div class="modal-sub">소중한 한 표 감사해요!<br>결과는 시상식에서 발표됩니다.</div>
+    <button class="btn btn-black" onclick="closeModal()">확인</button>
+  </div>
+</div>
+
 <!-- 투표 화면 -->
 <div class="screen active" id="screen-vote">
-  <div class="card">
-    <div class="section-label">내 좌석 번호</div>
-    <input type="text" id="seat-input" placeholder="예: 나-55, 다-120" autocomplete="off" />
-    <div class="divider"></div>
-    <div class="section-label">투표할 팀 선택</div>
-    <div id="vote-options"></div>
-    <button class="btn btn-black" onclick="submitVote()" style="margin-top:8px;">투표하기</button>
-    <div class="msg" id="vote-msg"></div>
+  <!-- 투표 불가 상태 -->
+  <div id="vote-closed-view" style="display:none;">
+    <div class="vote-closed">
+      <div class="vote-closed-icon" id="closed-icon">⏳</div>
+      <div class="vote-closed-title" id="closed-title">투표 준비 중</div>
+      <div class="vote-closed-sub" id="closed-sub">잠시 후 투표가 시작됩니다.</div>
+    </div>
+  </div>
+
+  <!-- 투표 폼 -->
+  <div id="vote-form-view">
+    <div class="card">
+      <div class="section-label">내 좌석 번호</div>
+      <input type="text" id="seat-input" placeholder="예: 나-55, 다120" autocomplete="off" />
+      <div class="divider"></div>
+      <div class="section-label">투표할 팀 선택</div>
+      <div id="vote-options"></div>
+      <button class="btn btn-black" onclick="submitVote()" style="margin-top:8px;" id="vote-btn">투표하기</button>
+      <div class="msg" id="vote-msg"></div>
+    </div>
   </div>
 </div>
 
@@ -123,8 +133,8 @@
 <div class="screen" id="screen-admin">
   <div id="admin-login" class="admin-gate">
     <div class="card">
-      <div class="page-title" style="font-size:18px;margin-bottom:4px;">관리자</div>
-      <div class="page-sub">비밀번호를 입력하세요</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:4px;">관리자</div>
+      <div style="font-size:13px;color:#888;margin-bottom:16px;">비밀번호를 입력하세요</div>
       <input type="password" id="pw-input" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPw()" />
       <button class="btn btn-black" onclick="checkPw()" style="margin-top:8px;">확인</button>
       <div class="msg" id="pw-msg"></div>
@@ -132,39 +142,44 @@
   </div>
 
   <div id="admin-panel" style="display:none;">
+
+    <!-- 투표 시간 설정 -->
     <div class="card">
-      <div class="section-label">팀 목록</div>
-      <div id="team-list"></div>
-      <button class="btn btn-outline btn-sm" onclick="addTeam()" style="margin-top:4px;">+ 팀 추가</button>
+      <div class="section-label">투표 시간 설정</div>
+      <div id="vote-status-badge"></div>
+      <label style="font-size:13px;color:#888;display:block;margin-bottom:4px;">투표 시작 시각</label>
+      <input type="datetime-local" id="vote-open-time" style="margin-bottom:10px;" />
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-black btn-sm" onclick="saveVoteTime()">시각 저장</button>
+        <button class="btn btn-outline btn-sm" id="toggle-vote-btn" onclick="toggleVote()">-</button>
+      </div>
+      <div class="msg" id="time-msg"></div>
     </div>
 
+    <!-- 현장 좌석 추가 -->
     <div class="card">
-      <div class="section-label">현장 결제 좌석 추가</div>
-      <p style="font-size:13px;color:#888;margin-bottom:10px;">예매 외 현장 결제 좌석을 추가하세요</p>
+      <div class="section-label">현장 결제 / 초대권 좌석 추가</div>
+      <p style="font-size:13px;color:#888;margin-bottom:10px;">예매 외 좌석을 추가하면 투표가 허용돼요</p>
       <div style="display:flex;gap:8px;">
         <input type="text" id="extra-input" placeholder="예: 나-55" style="margin:0;flex:1;" onkeydown="if(event.key==='Enter')addExtraSeat()" />
         <button class="btn btn-black btn-sm" onclick="addExtraSeat()">추가</button>
       </div>
       <div id="extra-tags" style="margin-top:10px;"></div>
       <div class="msg" id="extra-msg"></div>
+      <button class="btn btn-black" onclick="saveExtraSeats()" style="margin-top:12px;">저장</button>
     </div>
 
     <div style="display:flex;gap:10px;margin-bottom:14px;">
-      <button class="btn btn-black" onclick="saveSettings()">저장</button>
       <button class="btn btn-danger btn-sm" onclick="resetVotes()" style="flex:1;">투표 초기화</button>
     </div>
     <div class="msg" id="admin-msg"></div>
 
-    <div class="card">
-      <div class="section-label">유효 좌석 현황</div>
-      <div id="seat-stats" style="font-size:13px;color:#555;line-height:2;"></div>
-    </div>
-
     <div class="divider"></div>
 
+    <!-- 실시간 집계 -->
     <div class="stats-grid">
       <div class="stat-box">
-        <div class="stat-num" id="total-votes">0</div>
+        <div class="stat-num" id="total-votes">-</div>
         <div class="stat-label">총 투표 수</div>
       </div>
       <div class="stat-box">
@@ -174,11 +189,8 @@
     </div>
 
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div class="section-label" style="margin:0;">득표 현황</div>
-        <button class="btn btn-outline btn-sm" onclick="renderResult()">새로고침</button>
-      </div>
-      <div id="result-list"></div>
+      <div class="section-label" style="margin-bottom:14px;">실시간 득표 현황</div>
+      <div id="result-list"><div class="loading">불러오는 중...</div></div>
     </div>
 
     <div class="card">
@@ -186,13 +198,35 @@
         <div class="section-label" style="margin:0;">투표 내역</div>
         <button class="btn btn-outline btn-sm" onclick="exportCSV()">CSV 저장</button>
       </div>
-      <div class="log-wrap" id="vote-log"></div>
+      <div class="log-wrap" id="vote-log"><div class="loading">불러오는 중...</div></div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">유효 좌석 현황</div>
+      <div id="seat-stats" style="font-size:13px;color:#555;line-height:2;"></div>
     </div>
   </div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCaSQOYuHoRCHztYApRtEscbLZ8A0uKyEs",
+  authDomain: "mutudio-beta.firebaseapp.com",
+  projectId: "mutudio-beta",
+  storageBucket: "mutudio-beta.firebasestorage.app",
+  messagingSenderId: "988959695280",
+  appId: "1:988959695280:web:7564c37de3775a22147675"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const ADMIN_PW = '0301!!';
+const VOTE_COL = 'muestage2026_votes';
+const META_COL = 'muestage2026_meta';
 
 const PRESET_SEATS = {
   '가': [3,4,5,106,107,108],
@@ -206,44 +240,19 @@ const TEAMS = [
   'REALEE X BELIEVE','LETDO X HAIAN','HYOS','AUSTIN','LEEKO','AZHA X ARMSEOK'
 ];
 
-let state = {
-  teams: [...TEAMS],
-  votes: {},
-  extraSeats: [],
-  validSeats: new Set(),
-  adminUnlocked: false,
-};
+let extraSeats = [];
+let validSeats = new Set();
+let adminUnlocked = false;
+let allVotes = {};
+let voteConfig = { openTime: '2026-09-05T19:00', manualClosed: false };
+let unsubscribeVotes = null;
 
 function buildValidSeats() {
-  state.validSeats = new Set();
+  validSeats = new Set();
   ['가','나','다','라'].forEach(z => {
-    PRESET_SEATS[z].forEach(n => state.validSeats.add(z + '-' + n));
+    PRESET_SEATS[z].forEach(n => validSeats.add(z + '-' + n));
   });
-  state.extraSeats.forEach(s => state.validSeats.add(s));
-}
-
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['vote','admin'][i] === name);
-  });
-  if (name === 'admin' && state.adminUnlocked) showAdminPanel();
-}
-
-/* 투표 */
-function renderVoteOptions() {
-  document.getElementById('vote-options').innerHTML = state.teams.map((t, i) => t.trim() ? `
-    <label class="vote-option" onclick="selectTeam(${i})">
-      <input type="radio" name="team" value="${i}" />
-      <span class="vote-num">${i+1}</span>
-      <span class="vote-name">${t}</span>
-    </label>
-  ` : '').join('');
-}
-
-function selectTeam(i) {
-  document.querySelectorAll('.vote-option').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+  extraSeats.forEach(s => validSeats.add(s));
 }
 
 function normalizeSeat(raw) {
@@ -253,156 +262,303 @@ function normalizeSeat(raw) {
   return m[1] + '-' + parseInt(m[2]);
 }
 
-function submitVote() {
+function isVoteOpen() {
+  if (voteConfig.manualClosed) return false;
+  const open = new Date(voteConfig.openTime);
+  return Date.now() >= open.getTime();
+}
+
+function updateVoteView() {
+  const formView = document.getElementById('vote-form-view');
+  const closedView = document.getElementById('vote-closed-view');
+  if (isVoteOpen()) {
+    formView.style.display = 'block';
+    closedView.style.display = 'none';
+  } else {
+    formView.style.display = 'none';
+    closedView.style.display = 'block';
+    const open = new Date(voteConfig.openTime);
+    const now = new Date();
+    if (voteConfig.manualClosed) {
+      document.getElementById('closed-icon').textContent = '🔒';
+      document.getElementById('closed-title').textContent = '투표가 마감되었습니다';
+      document.getElementById('closed-sub').textContent = '투표가 종료되었습니다.\n결과는 시상식에서 발표됩니다.';
+    } else if (now < open) {
+      document.getElementById('closed-icon').textContent = '⏳';
+      document.getElementById('closed-title').textContent = '투표 준비 중';
+      const h = open.getHours(), m2 = String(open.getMinutes()).padStart(2,'0');
+      document.getElementById('closed-sub').textContent = `투표는 ${open.getMonth()+1}월 ${open.getDate()}일 ${h}시 ${m2}분에 시작됩니다.`;
+    }
+  }
+}
+
+window.showScreen = function(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['vote','admin'][i] === name);
+  });
+  if (name === 'admin' && adminUnlocked) renderAdminStatus();
+};
+
+// 투표
+window.selectTeam = function(i) {
+  document.querySelectorAll('.vote-option').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+};
+
+window.submitVote = async function() {
+  if (!isVoteOpen()) { showMsg('vote-msg', '현재 투표 시간이 아닙니다.', 'error'); return; }
   const seat = normalizeSeat(document.getElementById('seat-input').value);
   const checked = document.querySelector('input[name=team]:checked');
   if (!seat) { showMsg('vote-msg', '좌석 번호 형식이 맞지 않아요. 예: 나-55', 'error'); return; }
   if (!checked) { showMsg('vote-msg', '투표할 팀을 선택해주세요.', 'error'); return; }
-  if (!state.validSeats.has(seat)) { showMsg('vote-msg', `'${seat}' 는 유효한 좌석이 아닙니다. 확인 후 다시 입력해주세요.`, 'error'); return; }
-  if (state.votes[seat] !== undefined) { showMsg('vote-msg', `${seat} 좌석은 이미 투표했습니다.`, 'error'); return; }
-  const idx = Number(checked.value);
-  state.votes[seat] = idx;
-  document.getElementById('seat-input').value = '';
-  document.querySelectorAll('input[name=team]').forEach(r => r.checked = false);
-  document.querySelectorAll('.vote-option').forEach(el => el.classList.remove('selected'));
-  showMsg('vote-msg', `✅ ${seat} 투표 완료! (${idx+1}번 ${state.teams[idx]})`, 'success');
+  if (!validSeats.has(seat)) { showMsg('vote-msg', `'${seat}' 는 유효한 좌석이 아닙니다. 티켓의 좌석 번호를 다시 확인해주세요.`, 'error'); return; }
+
+  const voteBtn = document.getElementById('vote-btn');
+  voteBtn.disabled = true;
+  voteBtn.textContent = '처리 중...';
+
+  try {
+    const ref = doc(db, VOTE_COL, seat);
+    const existing = await getDoc(ref);
+    if (existing.exists()) {
+      showMsg('vote-msg', `${seat} 좌석은 이미 투표했습니다.`, 'error');
+      voteBtn.disabled = false; voteBtn.textContent = '투표하기';
+      return;
+    }
+    const idx = Number(checked.value);
+    await setDoc(ref, { teamIdx: idx, teamName: TEAMS[idx], seat, ts: Date.now() });
+
+    document.getElementById('seat-input').value = '';
+    document.querySelectorAll('input[name=team]').forEach(r => r.checked = false);
+    document.querySelectorAll('.vote-option').forEach(el => el.classList.remove('selected'));
+    hideMsg('vote-msg');
+
+    document.getElementById('modal-seat').textContent = seat;
+    document.getElementById('modal-team').textContent = `${idx+1}번 ${TEAMS[idx]}`;
+    document.getElementById('vote-modal').classList.add('show');
+  } catch(e) {
+    showMsg('vote-msg', '오류가 발생했습니다. 다시 시도해주세요.', 'error');
+  } finally {
+    voteBtn.disabled = false; voteBtn.textContent = '투표하기';
+  }
+};
+
+window.closeModal = function() {
+  document.getElementById('vote-modal').classList.remove('show');
+};
+
+// 관리자
+window.checkPw = function() {
+  if (document.getElementById('pw-input').value === ADMIN_PW) {
+    adminUnlocked = true;
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadConfig();
+    startRealtimeVotes();
+  } else {
+    showMsg('pw-msg', '비밀번호가 맞지 않습니다.', 'error');
+  }
+};
+
+async function loadConfig() {
+  try {
+    const snap = await getDoc(doc(db, META_COL, 'config'));
+    if (snap.exists()) {
+      const d = snap.data();
+      if (d.openTime) voteConfig.openTime = d.openTime;
+      if (d.manualClosed !== undefined) voteConfig.manualClosed = d.manualClosed;
+      if (d.extraSeats) { extraSeats = d.extraSeats; buildValidSeats(); renderExtraTags(); renderSeatStats(); }
+    }
+    document.getElementById('vote-open-time').value = voteConfig.openTime;
+    renderAdminStatus();
+    updateVoteView();
+  } catch(e) { console.error(e); }
 }
 
-/* 결과 */
+async function saveConfig() {
+  await setDoc(doc(db, META_COL, 'config'), {
+    openTime: voteConfig.openTime,
+    manualClosed: voteConfig.manualClosed,
+    extraSeats,
+  });
+}
+
+window.saveVoteTime = async function() {
+  const val = document.getElementById('vote-open-time').value;
+  if (!val) { showMsg('time-msg', '시각을 입력해주세요.', 'error'); return; }
+  voteConfig.openTime = val;
+  await saveConfig();
+  renderAdminStatus();
+  updateVoteView();
+  showMsg('time-msg', '✅ 투표 시작 시각이 저장되었습니다.', 'success');
+};
+
+window.toggleVote = async function() {
+  voteConfig.manualClosed = !voteConfig.manualClosed;
+  await saveConfig();
+  renderAdminStatus();
+  updateVoteView();
+  showMsg('time-msg', voteConfig.manualClosed ? '🔒 투표를 수동으로 마감했습니다.' : '✅ 투표를 다시 열었습니다.', voteConfig.manualClosed ? 'error' : 'success');
+};
+
+function renderAdminStatus() {
+  const badge = document.getElementById('vote-status-badge');
+  const btn = document.getElementById('toggle-vote-btn');
+  if (isVoteOpen()) {
+    badge.className = 'status-badge status-open';
+    badge.textContent = '🟢 투표 진행 중';
+    btn.textContent = '투표 마감';
+    btn.className = 'btn btn-red btn-sm';
+  } else if (voteConfig.manualClosed) {
+    badge.className = 'status-badge status-closed';
+    badge.textContent = '🔒 수동 마감됨';
+    btn.textContent = '투표 다시 열기';
+    btn.className = 'btn btn-black btn-sm';
+  } else {
+    badge.className = 'status-badge status-pending';
+    badge.textContent = '⏳ 시작 전';
+    btn.textContent = '지금 바로 열기';
+    btn.className = 'btn btn-black btn-sm';
+  }
+}
+
+window.addExtraSeat = function() {
+  const raw = document.getElementById('extra-input').value;
+  const seat = normalizeSeat(raw);
+  if (!seat) { showMsg('extra-msg', '형식이 맞지 않아요. 예: 나-55', 'error'); return; }
+  if (extraSeats.includes(seat) || (PRESET_SEATS[seat[0]] || []).includes(parseInt(seat.split('-')[1]))) {
+    showMsg('extra-msg', `${seat} 는 이미 등록된 좌석이에요.`, 'error'); return;
+  }
+  extraSeats.push(seat);
+  document.getElementById('extra-input').value = '';
+  renderExtraTags();
+  hideMsg('extra-msg');
+};
+
+window.removeExtra = function(i) { extraSeats.splice(i,1); renderExtraTags(); };
+
+function renderExtraTags() {
+  const el = document.getElementById('extra-tags');
+  el.innerHTML = extraSeats.length
+    ? extraSeats.map((s,i) => `<span class="extra-tag">${s}<button onclick="removeExtra(${i})">✕</button></span>`).join('')
+    : '<span style="font-size:13px;color:#aaa;">추가된 좌석 없음</span>';
+}
+
+window.saveExtraSeats = async function() {
+  try {
+    await saveConfig();
+    buildValidSeats();
+    renderSeatStats();
+    showMsg('extra-msg', `✅ 저장 완료! 현장 좌석 ${extraSeats.length}석 반영됨`, 'success');
+  } catch(e) { showMsg('extra-msg', '저장 중 오류가 발생했습니다.', 'error'); }
+};
+
+window.resetVotes = async function() {
+  if (!confirm('투표 내역을 모두 초기화할까요? 되돌릴 수 없어요!')) return;
+  try {
+    const snap = await getDocs(collection(db, VOTE_COL));
+    await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
+    showMsg('admin-msg', '🗑️ 투표 내역이 초기화되었습니다.', 'error');
+  } catch(e) { showMsg('admin-msg', '초기화 중 오류가 발생했습니다.', 'error'); }
+};
+
+// 실시간 집계
+function startRealtimeVotes() {
+  if (unsubscribeVotes) unsubscribeVotes();
+  unsubscribeVotes = onSnapshot(collection(db, VOTE_COL), (snap) => {
+    allVotes = {};
+    snap.forEach(d => { allVotes[d.id] = d.data(); });
+    renderResult();
+  });
+}
+
 function renderResult() {
-  const total = Object.keys(state.votes).length;
+  const total = Object.keys(allVotes).length;
   document.getElementById('total-votes').textContent = total;
-  document.getElementById('remain-votes').textContent = state.validSeats.size > 0 ? state.validSeats.size - total : '-';
+  document.getElementById('remain-votes').textContent = validSeats.size > 0 ? validSeats.size - total : '-';
 
   const counts = {};
-  state.teams.forEach((_, i) => counts[i] = 0);
-  Object.values(state.votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+  TEAMS.forEach((_, i) => counts[i] = 0);
+  Object.values(allVotes).forEach(v => { if (counts[v.teamIdx] !== undefined) counts[v.teamIdx]++; });
 
-  const sorted = state.teams
-    .map((t, i) => ({ name: t, idx: i, count: counts[i] }))
-    .filter(t => t.name.trim())
+  const sorted = TEAMS.map((t, i) => ({ name: t, idx: i, count: counts[i] }))
     .sort((a, b) => b.count - a.count);
 
   const medals = ['🥇','🥈','🥉'];
   document.getElementById('result-list').innerHTML = sorted.map((t, rank) => {
     const pct = total ? Math.round(t.count / total * 100) : 0;
-    const medal = medals[rank] || `${rank+1}위`;
     return `<div class="result-item">
       <div class="result-meta">
-        <span class="result-name">${medal} ${t.idx+1}. ${t.name}</span>
+        <span class="result-name">${medals[rank] || rank+1+'위'} ${t.idx+1}. ${t.name}</span>
         <span>${t.count}표 (${pct}%)</span>
       </div>
       <div class="result-bar-bg"><div class="result-bar" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 
-  const entries = Object.entries(state.votes);
+  const entries = Object.entries(allVotes).sort((a,b) => (b[1].ts||0)-(a[1].ts||0));
   document.getElementById('vote-log').innerHTML = entries.length
-    ? entries.map(([seat, idx]) => `<div class="log-item"><span>${seat}</span><span>${idx+1}번 ${state.teams[idx]}</span></div>`).join('')
-    : '<p style="font-size:13px;color:#aaa;">투표 내역 없음</p>';
+    ? entries.map(([seat, v]) => `<div class="log-item"><span>${seat}</span><span>${v.teamIdx+1}번 ${v.teamName}</span></div>`).join('')
+    : '<p style="font-size:13px;color:#aaa;padding:8px 0;">투표 내역 없음</p>';
 }
 
-function exportCSV() {
+window.exportCSV = function() {
   const rows = [['좌석번호','순번','강사이름']];
-  Object.entries(state.votes).forEach(([seat, idx]) => rows.push([seat, idx+1, state.teams[idx]]));
+  Object.entries(allVotes).forEach(([seat, v]) => rows.push([seat, v.teamIdx+1, v.teamName]));
   const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
   a.download = 'muestage2026_투표결과.csv';
   a.click();
-}
-
-/* 관리자 */
-function checkPw() {
-  const pw = document.getElementById('pw-input').value;
-  if (pw === ADMIN_PW) {
-    state.adminUnlocked = true;
-    showAdminPanel();
-  } else {
-    showMsg('pw-msg', '비밀번호가 맞지 않습니다.', 'error');
-  }
-}
-
-function showAdminPanel() {
-  document.getElementById('admin-login').style.display = 'none';
-  document.getElementById('admin-panel').style.display = 'block';
-  renderTeams();
-  renderExtraTags();
-  renderSeatStats();
-  renderResult();
-}
-
-function renderTeams() {
-  document.getElementById('team-list').innerHTML = state.teams.map((t, i) => `
-    <div class="team-row">
-      <span class="team-idx">${i+1}번</span>
-      <input type="text" value="${t}" placeholder="강사 이름" oninput="state.teams[${i}]=this.value" />
-      ${state.teams.length > 1 ? `<button class="btn btn-outline btn-sm" onclick="removeTeam(${i})" style="color:#e03;border-color:#fcc;padding:8px 10px;">✕</button>` : ''}
-    </div>
-  `).join('');
-}
-
-function addTeam() { state.teams.push(''); renderTeams(); }
-function removeTeam(i) { state.teams.splice(i,1); renderTeams(); }
-
-function addExtraSeat() {
-  const raw = document.getElementById('extra-input').value;
-  const seat = normalizeSeat(raw);
-  if (!seat) { showMsg('extra-msg', '형식이 맞지 않아요. 예: 나-55', 'error'); return; }
-  if (state.extraSeats.includes(seat) || (PRESET_SEATS[seat[0]] || []).includes(parseInt(seat.split('-')[1]))) {
-    showMsg('extra-msg', `${seat} 는 이미 등록된 좌석이에요.`, 'error'); return;
-  }
-  state.extraSeats.push(seat);
-  document.getElementById('extra-input').value = '';
-  renderExtraTags();
-  hideMsg('extra-msg');
-}
-
-function removeExtra(i) { state.extraSeats.splice(i,1); renderExtraTags(); }
-
-function renderExtraTags() {
-  const el = document.getElementById('extra-tags');
-  el.innerHTML = state.extraSeats.length
-    ? state.extraSeats.map((s,i) => `<span class="extra-tag">${s}<button onclick="removeExtra(${i})">✕</button></span>`).join('')
-    : '<span style="font-size:13px;color:#aaa;">추가된 좌석 없음</span>';
-}
-
-function saveSettings() {
-  buildValidSeats();
-  renderSeatStats();
-  renderVoteOptions();
-  showMsg('admin-msg', `✅ 저장 완료! 유효 좌석 ${state.validSeats.size}석`, 'success');
-}
-
-function resetVotes() {
-  if (!confirm('투표 내역을 모두 초기화할까요?')) return;
-  state.votes = {};
-  showMsg('admin-msg', '🗑️ 투표 내역이 초기화되었습니다.', 'error');
-}
+};
 
 function renderSeatStats() {
   const zones = ['가','나','다','라'];
   document.getElementById('seat-stats').innerHTML = zones.map(z => {
     const preset = PRESET_SEATS[z].length;
-    const extra = state.extraSeats.filter(s => s.startsWith(z+'-')).length;
+    const extra = extraSeats.filter(s => s.startsWith(z+'-')).length;
     return `<div>${z}열: ${preset + extra}석${extra ? ` (+현장 ${extra})` : ''}</div>`;
-  }).join('') + `<div style="margin-top:8px;font-weight:500;">합계: ${state.validSeats.size}석</div>`;
+  }).join('') + `<div style="margin-top:8px;font-weight:500;">합계: ${validSeats.size}석</div>`;
 }
 
-/* 메시지 */
+function renderVoteOptions() {
+  document.getElementById('vote-options').innerHTML = TEAMS.map((t, i) => `
+    <label class="vote-option" onclick="selectTeam(${i})">
+      <input type="radio" name="team" value="${i}" />
+      <span class="vote-num">${i+1}</span>
+      <span class="vote-name">${t}</span>
+    </label>
+  `).join('');
+}
+
 function showMsg(id, text, type) {
   const el = document.getElementById(id);
   el.textContent = text;
   el.className = 'msg show msg-' + type;
   if (type === 'success') setTimeout(() => hideMsg(id), 4000);
 }
-function hideMsg(id) {
-  const el = document.getElementById(id);
-  el.className = 'msg';
-}
+function hideMsg(id) { document.getElementById(id).className = 'msg'; }
 
+// 초기화
 buildValidSeats();
 renderVoteOptions();
+
+// 페이지 로드 시 config 불러와서 투표 오픈 여부 확인
+(async () => {
+  try {
+    const snap = await getDoc(doc(db, META_COL, 'config'));
+    if (snap.exists()) {
+      const d = snap.data();
+      if (d.openTime) voteConfig.openTime = d.openTime;
+      if (d.manualClosed !== undefined) voteConfig.manualClosed = d.manualClosed;
+      if (d.extraSeats) { extraSeats = d.extraSeats; buildValidSeats(); }
+    }
+  } catch(e) {}
+  updateVoteView();
+  // 1분마다 시간 체크 (자동 오픈)
+  setInterval(updateVoteView, 60000);
+})();
 </script>
 </body>
 </html>
