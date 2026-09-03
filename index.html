@@ -544,27 +544,29 @@ window.loadJudgeResult = async function() {
     const count = Object.keys(judges).length;
     document.getElementById('judge-count').textContent = `(${count}/11명 완료)`;
 
-    // 팀별 강사투표 점수 합산
-    const judgeScores = {};
-    TEAMS.forEach((_, i) => judgeScores[i] = 0);
+    // 팀별 강사 득표수 집계
+    const judgeCounts = {};
+    TEAMS.forEach((_, i) => judgeCounts[i] = 0);
     Object.values(judges).forEach(j => {
-      for (const [teamIdx, score] of Object.entries(j.scores || {})) {
-        judgeScores[parseInt(teamIdx)] = (judgeScores[parseInt(teamIdx)] || 0) + score;
-      }
+      if (j.voteTeamIdx !== undefined) judgeCounts[j.voteTeamIdx]++;
     });
 
-    // 강사투표 순위 표시
-    const maxJudge = Math.max(...Object.values(judgeScores)) || 1;
-    const sortedJudge = TEAMS.map((t, i) => ({ name: t, idx: i, score: judgeScores[i] }))
-      .sort((a, b) => b.score - a.score);
+    // 득표수 → 순위 → 점수
+    const RANK_SCORES = [50, 45, 40, 36, 32, 28, 24, 20, 16, 12, 8];
+    const judgeSorted = TEAMS.map((_, i) => ({ idx: i, count: judgeCounts[i] }))
+      .sort((a, b) => b.count - a.count);
+    const judgeScores = {};
+    judgeSorted.forEach((t, rank) => { judgeScores[t.idx] = RANK_SCORES[rank]; });
 
+    // 강사투표 현황 표시
+    const maxCount = Math.max(...Object.values(judgeCounts)) || 1;
     const medals = ['🥇','🥈','🥉'];
-    document.getElementById('judge-list').innerHTML = sortedJudge.map((t, rank) => {
-      const pct = maxJudge ? Math.round(t.score / maxJudge * 100) : 0;
+    document.getElementById('judge-list').innerHTML = judgeSorted.map((t, rank) => {
+      const pct = Math.round(t.count / maxCount * 100);
       return `<div class="result-item">
         <div class="result-meta">
-          <span class="result-name">${medals[rank] || rank+1+'위'} ${t.idx+1}. ${t.name}</span>
-          <span>${t.score}점</span>
+          <span class="result-name">${medals[rank] || rank+1+'위'} ${t.idx+1}. ${TEAMS[t.idx]}</span>
+          <span>${t.count}표 → ${judgeScores[t.idx]}pt</span>
         </div>
         <div class="result-bar-bg"><div class="result-bar" style="width:${pct}%"></div></div>
       </div>`;
