@@ -619,6 +619,7 @@ function renderFinalResult(judgeScores) {
   }).join('');
 }
 
+window.exportCSV = function() {
   const rows = [['좌석번호','순번','강사이름']];
   Object.entries(allVotes).forEach(([seat, v]) => rows.push([seat, v.teamIdx+1, v.teamName]));
   const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
