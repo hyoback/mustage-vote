@@ -197,6 +197,14 @@
       <div class="log-wrap" id="vote-log"><div class="loading">불러오는 중...</div></div>
     </div>
 
+    <!-- 강사투표 열기/닫기 -->
+    <div class="card">
+      <div class="section-label">강사 투표 상태</div>
+      <div id="judge-status-badge" style="margin-bottom:12px;"></div>
+      <button class="btn btn-sm" id="toggle-judge-btn" onclick="toggleJudgeVote()" style="width:100%;padding:13px;">-</button>
+      <div class="msg" id="judge-time-msg"></div>
+    </div>
+
     <div class="divider"></div>
 
     <!-- 강사투표 집계 -->
@@ -261,7 +269,7 @@ let extraSeats = [];
 let validSeats = new Set();
 let adminUnlocked = false;
 let allVotes = {};
-let voteConfig = { manualClosed: false };
+let voteConfig = { manualClosed: false, judgeManualClosed: false };
 let unsubscribeVotes = null;
 
 function buildValidSeats() {
@@ -376,6 +384,7 @@ async function loadConfig() {
     if (snap.exists()) {
       const d = snap.data();
       if (d.manualClosed !== undefined) voteConfig.manualClosed = d.manualClosed;
+      if (d.judgeManualClosed !== undefined) voteConfig.judgeManualClosed = d.judgeManualClosed;
       if (d.extraSeats) { extraSeats = d.extraSeats; buildValidSeats(); renderExtraTags(); renderSeatStats(); }
     }
     renderAdminStatus();
@@ -386,6 +395,7 @@ async function loadConfig() {
 async function saveConfig() {
   await setDoc(doc(db, META_COL, 'config'), {
     manualClosed: voteConfig.manualClosed,
+    judgeManualClosed: voteConfig.judgeManualClosed,
     extraSeats,
   });
 }
@@ -403,19 +413,28 @@ function renderAdminStatus() {
   const btn = document.getElementById('toggle-vote-btn');
   if (isVoteOpen()) {
     badge.className = 'status-badge status-open';
-    badge.textContent = '🟢 투표 진행 중';
-    btn.textContent = '투표 마감';
+    badge.textContent = '🟢 관객 투표 진행 중';
+    btn.textContent = '관객 투표 마감';
     btn.className = 'btn btn-red btn-sm';
-  } else if (voteConfig.manualClosed) {
-    badge.className = 'status-badge status-closed';
-    badge.textContent = '🔒 수동 마감됨';
-    btn.textContent = '투표 다시 열기';
-    btn.className = 'btn btn-black btn-sm';
   } else {
-    badge.className = 'status-badge status-pending';
-    badge.textContent = '⏳ 시작 전';
-    btn.textContent = '지금 바로 열기';
+    badge.className = 'status-badge status-closed';
+    badge.textContent = '🔒 관객 투표 마감됨';
+    btn.textContent = '관객 투표 다시 열기';
     btn.className = 'btn btn-black btn-sm';
+  }
+
+  const jbadge = document.getElementById('judge-status-badge');
+  const jbtn = document.getElementById('toggle-judge-btn');
+  if (!voteConfig.judgeManualClosed) {
+    jbadge.className = 'status-badge status-open';
+    jbadge.textContent = '🟢 강사 투표 진행 중';
+    jbtn.textContent = '강사 투표 마감';
+    jbtn.className = 'btn btn-red btn-sm';
+  } else {
+    jbadge.className = 'status-badge status-closed';
+    jbadge.textContent = '🔒 강사 투표 마감됨';
+    jbtn.textContent = '강사 투표 다시 열기';
+    jbtn.className = 'btn btn-black btn-sm';
   }
 }
 
@@ -447,7 +466,14 @@ function parseExtraInput(raw) {
   return seats;
 }
 
-window.addExtraSeat = function() {
+window.toggleJudgeVote = async function() {
+  voteConfig.judgeManualClosed = !voteConfig.judgeManualClosed;
+  await saveConfig();
+  renderAdminStatus();
+  showMsg('judge-time-msg', voteConfig.judgeManualClosed ? '🔒 강사 투표를 마감했습니다.' : '✅ 강사 투표를 다시 열었습니다.', voteConfig.judgeManualClosed ? 'error' : 'success');
+};
+
+
   const raw = document.getElementById('extra-input').value;
   if (!raw.trim()) return;
   const parsed = parseExtraInput(raw);

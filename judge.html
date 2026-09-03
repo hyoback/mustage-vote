@@ -188,15 +188,16 @@ window.submitJudge = async function() {
   btn.textContent = '제출 중...';
 
   try {
-    const ref = doc(db, JUDGE_COL, String(myTeamIdx));
-    const existing = await getDoc(ref);
-    if (existing.exists()) {
-      showMsg('vote-msg', '이미 투표하셨습니다.', 'error');
+    // 강사투표 마감 여부 확인
+    const configSnap = await getDoc(doc(db, 'muestage2026_meta', 'config'));
+    if (configSnap.exists() && configSnap.data().judgeManualClosed) {
+      showMsg('vote-msg', '강사 투표가 마감되었습니다.', 'error');
       btn.disabled = false; btn.textContent = '투표 제출하기'; btn.style.opacity = '1';
       return;
     }
 
-    await setDoc(ref, {
+    // 재투표 허용 — 중복 체크 없이 바로 덮어쓰기
+    await setDoc(doc(db, JUDGE_COL, String(myTeamIdx)), {
       judgeTeamIdx: myTeamIdx,
       judgeTeamName: TEAMS[myTeamIdx],
       voteTeamIdx: voteTeamIdx,
