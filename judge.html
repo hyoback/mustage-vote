@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mu:stage 2026 강사 투표</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f5f5f5; color: #111; min-height: 100vh; }
+  .header { background: #111; color: #fff; padding: 24px 16px 20px; text-align: center; }
+  .header-title { font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
+  .header-sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .section-label { font-size: 12px; color: #888; font-weight: 500; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+  .btn-black { background: #111; color: #fff; }
+  .btn-black:hover { opacity: 0.85; }
+  .btn-outline { background: #fff; color: #111; border: 1px solid #ddd; }
+  .btn-outline:hover { background: #f5f5f5; }
+  .btn-sm { width: auto; padding: 8px 16px; font-size: 13px; }
+  .btn-disabled { background: #ddd; color: #aaa; cursor: not-allowed; }
+  .divider { height: 1px; background: #f0f0f0; margin: 16px 0; }
+  .msg { padding: 12px 14px; border-radius: 8px; font-size: 14px; margin-top: 12px; display: none; }
+  .msg.show { display: block; }
+  .msg-success { background: #f0fdf4; color: #166534; }
+  .msg-error { background: #fef2f2; color: #991b1b; }
+  .msg-info { background: #eff6ff; color: #1e40af; }
+
+  /* 본인 팀 선택 */
+  .my-team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .my-team-btn { padding: 12px 8px; border: 1.5px solid #e5e5e5; border-radius: 10px; background: #fff; font-size: 13px; font-weight: 500; cursor: pointer; text-align: center; transition: all 0.15s; font-family: inherit; color: #111; }
+  .my-team-btn:hover { border-color: #bbb; background: #fafafa; }
+  .my-team-btn.selected { border-color: #111; background: #111; color: #fff; }
+
+  /* 순위 입력 */
+  .rank-list { display: flex; flex-direction: column; gap: 8px; }
+  .rank-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fafafa; border-radius: 10px; border: 1px solid #f0f0f0; }
+  .rank-badge { width: 28px; height: 28px; border-radius: 50%; background: #111; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .rank-badge.gold { background: #b8860b; }
+  .rank-badge.silver { background: #888; }
+  .rank-badge.bronze { background: #a0522d; }
+  .rank-name { flex: 1; font-size: 14px; font-weight: 500; }
+  .rank-score { font-size: 13px; color: #aaa; min-width: 32px; text-align: right; }
+  select.rank-select { padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; color: #111; outline: none; cursor: pointer; min-width: 90px; }
+  select.rank-select:focus { border-color: #111; }
+
+  /* 완료 모달 */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .modal-overlay.show { opacity: 1; pointer-events: all; }
+  .modal-box { background: #fff; border-radius: 20px; padding: 36px 28px; max-width: 320px; width: 90%; text-align: center; transform: scale(0.92); transition: transform 0.2s; }
+  .modal-overlay.show .modal-box { transform: scale(1); }
+  .modal-icon { font-size: 52px; margin-bottom: 16px; }
+  .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .modal-sub { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 24px; }
+
+  .step { display: none; }
+  .step.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">mu:stage 2026</div>
+  <div class="header-sub">강사 투표</div>
+</div>
+
+<!-- 완료 모달 -->
+<div class="modal-overlay" id="done-modal">
+  <div class="modal-box">
+    <div class="modal-icon">🏆</div>
+    <div class="modal-title">투표 완료!</div>
+    <div class="modal-sub">소중한 한 표 감사해요.<br>결과는 시상식에서 발표됩니다.</div>
+    <button class="btn btn-black" onclick="document.getElementById('done-modal').classList.remove('show')">확인</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Step 1: 본인 팀 선택 -->
+  <div class="step active" id="step1">
+    <div class="card">
+      <div class="section-label">본인 팀을 선택해주세요</div>
+      <p style="font-size:13px;color:#888;margin-bottom:14px;">본인 팀은 투표에서 제외됩니다.</p>
+      <div class="my-team-grid" id="my-team-grid"></div>
+    </div>
+    <button class="btn btn-black" onclick="goToStep2()" id="next-btn" style="opacity:0.3;" disabled>다음 →</button>
+  </div>
+
+  <!-- Step 2: 순위 입력 -->
+  <div class="step" id="step2">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <button class="btn btn-outline btn-sm" onclick="goToStep1()">← 다시</button>
+        <div style="font-size:13px;color:#888;">본인 팀: <strong id="my-team-label" style="color:#111;"></strong></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-label">팀 순위를 선택해주세요 <span style="font-size:11px;font-weight:400;">(1위~10위, 중복 불가)</span></div>
+      <div class="rank-list" id="rank-list"></div>
+      <div class="msg" id="rank-msg"></div>
+    </div>
+    <button class="btn btn-black" onclick="submitJudge()" id="submit-btn" style="margin-bottom:20px;">투표 제출하기</button>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCaSQOYuHoRCHztYApRtEscbLZ8A0uKyEs",
+  authDomain: "mutudio-beta.firebaseapp.com",
+  projectId: "mutudio-beta",
+  storageBucket: "mutudio-beta.firebasestorage.app",
+  messagingSenderId: "988959695280",
+  appId: "1:988959695280:web:7564c37de3775a22147675"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const JUDGE_COL = 'muestage2026_judge';
+
+const TEAMS = [
+  'SOPHIEHEN','ASME','EVE','HINARI','CHOCOL X HALO',
+  'REALEE X BELIEVE','LETDO X HAIAN','HYOS','AUSTIN','LEEKO','AZHA X ARMSEOK'
+];
+
+let myTeamIdx = null;
+let rankings = {}; // teamIdx → rank (1~10)
+
+// Step 1: 본인 팀 그리드
+function renderMyTeamGrid() {
+  document.getElementById('my-team-grid').innerHTML = TEAMS.map((t, i) => `
+    <button class="my-team-btn" onclick="selectMyTeam(${i})" id="mteam-${i}">${i+1}. ${t}</button>
+  `).join('');
+}
+
+window.selectMyTeam = function(i) {
+  myTeamIdx = i;
+  document.querySelectorAll('.my-team-btn').forEach((b, idx) => b.classList.toggle('selected', idx === i));
+  const btn = document.getElementById('next-btn');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+};
+
+window.goToStep1 = function() {
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('step2').classList.remove('active');
+  rankings = {};
+};
+
+window.goToStep2 = function() {
+  if (myTeamIdx === null) return;
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('my-team-label').textContent = `${myTeamIdx+1}. ${TEAMS[myTeamIdx]}`;
+  renderRankList();
+};
+
+// Step 2: 순위 입력
+function renderRankList() {
+  const others = TEAMS.map((t, i) => ({ name: t, idx: i })).filter(t => t.idx !== myTeamIdx);
+  // 10팀, 각각 1~10위 드롭다운
+  document.getElementById('rank-list').innerHTML = others.map((t, pos) => {
+    const opts = ['<option value="">순위 선택</option>',
+      ...Array.from({length: 10}, (_, r) => `<option value="${r+1}" ${rankings[t.idx]===r+1?'selected':''}>${r+1}위</option>`)
+    ].join('');
+    return `<div class="rank-item">
+      <div class="rank-badge ${pos===0?'gold':pos===1?'silver':pos===2?'bronze':''}" style="${pos>2?'background:#ccc;':''}">
+        ${pos+1}
+      </div>
+      <div class="rank-name">${t.idx+1}. ${t.name}</div>
+      <select class="rank-select" onchange="setRank(${t.idx}, this.value)" id="sel-${t.idx}">${opts}</select>
+    </div>`;
+  }).join('');
+}
+
+window.setRank = function(teamIdx, val) {
+  const rank = parseInt(val);
+  if (!rank) { delete rankings[teamIdx]; return; }
+  // 중복 체크: 같은 순위 있으면 기존 것 제거
+  for (const [k, v] of Object.entries(rankings)) {
+    if (v === rank && parseInt(k) !== teamIdx) {
+      delete rankings[k];
+      const el = document.getElementById('sel-' + k);
+      if (el) el.value = '';
+    }
+  }
+  rankings[teamIdx] = rank;
+};
+
+window.submitJudge = async function() {
+  // 검증: 10팀 모두 순위 입력했는지
+  const others = TEAMS.map((_, i) => i).filter(i => i !== myTeamIdx);
+  const missing = others.filter(i => !rankings[i]);
+  if (missing.length > 0) {
+    showMsg('rank-msg', `${missing.length}팀의 순위를 아직 선택하지 않았어요.`, 'error');
+    return;
+  }
+  // 중복 체크
+  const vals = Object.values(rankings);
+  if (new Set(vals).size !== vals.length) {
+    showMsg('rank-msg', '중복된 순위가 있어요. 확인해주세요.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '제출 중...';
+
+  try {
+    // 이미 투표했는지 확인
+    const ref = doc(db, JUDGE_COL, String(myTeamIdx));
+    const existing = await getDoc(ref);
+    if (existing.exists()) {
+      showMsg('rank-msg', '이미 투표하셨습니다.', 'error');
+      btn.disabled = false; btn.textContent = '투표 제출하기';
+      return;
+    }
+
+    // 점수 계산: 1위=10점, 2위=9점, ..., 10위=1점 (강사투표 내부 순위용 — 최종 합산은 관리자에서 처리)
+    // 저장은 raw 순위만 저장, 점수는 관리자에서 RANK_SCORES로 계산
+    const scores = {};
+    for (const [teamIdx, rank] of Object.entries(rankings)) {
+      scores[teamIdx] = 11 - rank;
+    }
+    scores[myTeamIdx] = 0; // 본인 팀은 0점
+
+    await setDoc(ref, {
+      judgeTeamIdx: myTeamIdx,
+      judgeTeamName: TEAMS[myTeamIdx],
+      rankings,
+      scores,
+      ts: Date.now(),
+    });
+
+    document.getElementById('done-modal').classList.add('show');
+  } catch(e) {
+    showMsg('rank-msg', '오류가 발생했습니다. 다시 시도해주세요.', 'error');
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = '투표 제출하기';
+  }
+};
+
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg show msg-' + type;
+  if (type === 'success') setTimeout(() => { el.className = 'msg'; }, 4000);
+}
+
+renderMyTeamGrid();
+</script>
+</body>
+</html>
